@@ -1,0 +1,631 @@
+@extends('cplantilla.bprincipal')
+
+@section('titulo', 'Administración de Asistencias')
+
+@section('contenidoplantilla')
+    <style>
+        /* Minimalist Design System */
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #f0fdf4;
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border-radius: 8px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        /* Clean Typography */
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-gray-600 { color: var(--gray-600); }
+        .text-gray-700 { color: var(--gray-700); }
+        .text-gray-900 { color: var(--gray-900); }
+
+        /* Clean Layout */
+        .container-clean { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+
+        /* Minimalist Cards */
+        .card-clean {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .card-header-clean {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+        }
+
+        .card-body-clean {
+            padding: 1.5rem;
+        }
+
+        /* Clean Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-icon.total { background: var(--primary); }
+        .stat-icon.presentes { background: var(--success); }
+        .stat-icon.ausentes { background: var(--danger); }
+        .stat-icon.tardanzas { background: var(--warning); }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-input {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .filter-select {
+            padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: white;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: var(--gray-50);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-responsive {
+            max-height: calc(100vh - 400px);
+            overflow-y: auto;
+        }
+
+        .table-modern {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .table-modern thead th {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table-modern tbody tr {
+            transition: var(--transition);
+        }
+
+        .table-modern tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        .table-modern tbody td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.875rem;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-badge.presente {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-badge.ausente {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .status-badge.tardanza {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .status-badge.justificada {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .status-badge.registrada {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-badge.pendiente {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        /* Action Buttons */
+        .btn-clean {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--gray-700);
+            border-color: var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .btn-info {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #0284c7;
+        }
+
+        /* Pagination */
+        .pagination-container {
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--gray-500);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 2px solid var(--gray-300);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-responsive {
+                max-height: calc(100vh - 500px);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        /* Breadcrumb Styles */
+        .breadcrumb-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            background: transparent;
+            margin-bottom: 0;
+            padding: 0;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "/";
+            color: var(--gray-400);
+            font-weight: 400;
+            margin: 0 0.5rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb-item a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+                                                                </td>
+
+                                                                <td class="align-middle">
+                                                                    <div class="btn-group" role="group">
+                                                                        <a href="{{ route('asistencia.detalle-estudiante', $asistencia->matricula_id) }}"
+                                                                            class="btn btn-sm btn-outline-primary"
+                                                                            title="Ver detalle del estudiante"
+                                                                            target="_blank">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </a>
+                                                                        @if($asistencia->justificacion)
+                                                                            <button class="btn btn-sm btn-outline-info"
+                                                                                    title="Ver justificación"
+                                                                                    onclick="verJustificacion('{{ $asistencia->justificacion }}')">
+                                                                                <i class="fas fa-comment"></i>
+                                                                            </button>
+                                                                        @endif
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <!-- Paginación -->
+                                            <div class="d-flex justify-content-center mt-3 p-3">
+                                                {{ $asistencias->appends(request()->query())->links() }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver justificación -->
+    <div class="modal fade" id="justificacionModal" tabindex="-1" role="dialog" aria-labelledby="justificacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="justificacionModalLabel">Justificación de Asistencia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="justificacionText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .form-control {
+            border: 1px solid #DAA520;
+        }
+
+        .table th {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .table td {
+            font-size: 0.875rem;
+        }
+    </style>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            // Inicializar Select2 para los selects con búsqueda
+            $('.select-search').select2({
+                placeholder: function() {
+                    return $(this).data('placeholder') || 'Seleccionar...';
+                },
+                allowClear: true,
+                width: '100%',
+                theme: 'bootstrap4',
+                language: {
+                    noResults: function() {
+                        return "No se encontraron resultados";
+                    },
+                    searching: function() {
+                        return "Buscando...";
+                    }
+                }
+            });
+
+            // Configurar placeholders específicos
+            $('#profesor_id').select2({
+                placeholder: 'Buscar profesor...',
+                allowClear: true
+            });
+
+            $('#curso_id').select2({
+                placeholder: 'Buscar curso...',
+                allowClear: true
+            });
+
+            $('#asignatura_id').select2({
+                placeholder: 'Buscar asignatura...',
+                allowClear: true
+            });
+        });
+
+        function verJustificacion(justificacion) {
+            document.getElementById('justificacionText').textContent = justificacion;
+            $('#justificacionModal').modal('show');
+        }
+
+
+
+        function exportarPDF() {
+            // Crear URL con los parámetros actuales
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Redirigir a la URL de exportación
+            window.location.href = '{{ route("asistencia.exportar-pdf-admin") }}?' + urlParams.toString();
+        }
+
+        // Auto-submit del formulario cuando cambian los filtros principales
+        document.getElementById('tipo_asistencia_id').addEventListener('change', function() {
+            this.closest('form').submit();
+        });
+
+        // Filtros dependientes: curso y asignatura dependen del profesor
+        $('#profesor_id').on('change', function() {
+            const profesorId = $(this).val();
+
+            // Limpiar y resetear selects dependientes usando Select2
+            $('#curso_id').empty().append('<option value="">Todos los cursos</option>').trigger('change');
+            $('#asignatura_id').empty().append('<option value="">Todas las asignaturas</option>').trigger('change');
+
+            if (profesorId) {
+                // Cargar cursos del profesor
+                fetch(`/asistencia/api/cursos-por-profesor/${profesorId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Cursos cargados:', data); // Debug
+                        data.forEach(curso => {
+                            const option = new Option(`${curso.grado.nombre} - ${curso.seccion.nombre}`, curso.curso_id, false, false);
+                            $('#curso_id').append(option);
+                        });
+                        $('#curso_id').trigger('change');
+                    })
+                    .catch(error => {
+                        console.error('Error cargando cursos:', error);
+                        alert('Error al cargar los cursos del profesor');
+                    });
+
+                // Cargar asignaturas del profesor
+                fetch(`/asistencia/api/asignaturas-por-profesor/${profesorId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Asignaturas cargadas:', data); // Debug
+                        data.forEach(asignatura => {
+                            const option = new Option(asignatura.nombre, asignatura.asignatura_id, false, false);
+                            $('#asignatura_id').append(option);
+                        });
+                        $('#asignatura_id').trigger('change');
+                    })
+                    .catch(error => {
+                        console.error('Error cargando asignaturas:', error);
+                        alert('Error al cargar las asignaturas del profesor');
+                    });
+            }
+        });
+    </script>
+@endsection

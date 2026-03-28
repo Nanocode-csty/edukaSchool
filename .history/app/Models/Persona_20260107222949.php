@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Persona extends Model
+{
+    use HasFactory;
+
+    protected $table = 'personas';
+    protected $primaryKey = 'id_persona';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'dni',
+        'nombres',
+        'apellido_paterno',
+        'apellido_materno',
+        'fecha_nacimiento',
+        'genero',
+        'direccion',
+        'telefono',
+        'telefono_alternativo',
+        'email',
+        'fecha_registro',
+        'estado',
+        'foto_url',
+        'observaciones'
+    ];
+
+    protected $casts = [
+        'id_persona' => 'integer',
+        'fecha_nacimiento' => 'date',
+    ];
+
+    public function usuario()
+    {
+        return $this->hasOne(Usuario::class, 'persona_id', 'id_persona');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Rol::class, 'persona_roles', 'id_persona', 'id_rol')
+                    ->withPivot('fecha_asignacion');
+    }
+
+    public function estudiante()
+    {
+        return $this->hasOne(InfEstudiante::class, 'persona_id', 'id_persona');
+    }
+
+    public function docente()
+    {
+        return $this->hasOne(InfDocente::class, 'persona_id', 'id_persona');
+    }
+
+    public function representante()
+    {
+        return $this->hasOne(InfRepresentante::class, 'persona_id', 'id_persona');
+    }
+
+    public function getNombreCompletoAttribute()
+    {
+        return trim($this->nombres . ' ' . $this->apellidos);
+    }
+
+    public function getApellidosAttribute()
+    {
+        // If the apellidos field exists directly, use it
+        if (isset($this->attributes['apellidos']) && !empty($this->attributes['apellidos'])) {
+            return $this->attributes['apellidos'];
+        }
+
+        // Otherwise, combine apellido_paterno and apellido_materno
+        return trim(($this->apellido_paterno ?? '') . ' ' . ($this->apellido_materno ?? ''));
+    }
+}

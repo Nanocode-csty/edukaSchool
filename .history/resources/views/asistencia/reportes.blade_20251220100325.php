@@ -1,0 +1,1154 @@
+@extends('cplantilla.bprincipal')
+@section('titulo','Reportes de Asistencia')
+@section('contenidoplantilla')
+<x-breadcrumb :module="'asistencia'" :section="'reportes'" />
+
+
+<div class="container-fluid" id="contenido-principal">
+    <div class="row mt-4 ml-1 mr-1">
+        <div class="col-12">
+            <div class="box_block">
+                <!-- Collapse header -->
+                <button class="btn btn-block text-left rounded-0 btn_header header_6" type="button" data-toggle="collapse" data-target="#collapseReportes" aria-expanded="true" aria-controls="collapseReportes" style="background: #0A8CB3 !important; font-weight: bold; color: white;">
+                    <i class="fas fa-chart-line m-1"></i>&nbsp;Reportes de Asistencia
+                    <div class="float-right"><i class="fas fa-chevron-down"></i></div>
+                </button>
+                <!-- Descripción -->
+                <div class="card-body rounded-0 border-0 pt-3 pb-3" style="background: #f3f3f3; border-bottom: 1px solid rgba(0,0,0,.125); border-top: 1px solid rgba(0,0,0,.125); color: #F59D24;">
+                    <div class="row justify-content-center align-items-center flex-wrap">
+                        <div class="col-auto text-center mb-2 mb-md-0" style="min-width:48px;">
+                            <i class="fas fa-chart-bar fa-2x"></i>
+                        </div>
+                        <div class="col px-2" style="text-align:justify;">
+                            <p style="margin-bottom: 0px; font-family: 'Quicksand', sans-serif; font-weight: 600; color: #004a92;">
+                                Genera reportes detallados de asistencia por período, curso, estudiante o docente. Analiza tendencias y patrones de asistencia para tomar decisiones informadas.
+                            </p>
+                            <p style="font-family: 'Quicksand', sans-serif; font-weight: 600; color: #004a92;">
+                                Utiliza los filtros avanzados para obtener información específica y exporta los reportes en diferentes formatos según tus necesidades.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Collapse: filtros y contenido -->
+                <div class="collapse show" id="collapseReportes">
+                    <div class="card card-body rounded-0 border-0 pt-0 pb-2" style="background: transparent;">
+                        <!-- Filtros de Reporte -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header" style="background: #0e4067; color: white;">
+                                        <h5 class="mb-0"><i class="fas fa-filter mr-2"></i>Filtros de Reporte</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="reportForm">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="fecha_inicio">Fecha Inicio</label>
+                                                        <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="fecha_fin">Fecha Fin</label>
+                                                        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="tipo_reporte">Tipo de Reporte</label>
+                                                        <select class="form-control" id="tipo_reporte" name="tipo_reporte">
+                                                            <option value="general">General</option>
+                                                            <option value="por_curso">Por Curso</option>
+                                                            <option value="por_estudiante">Por Estudiante</option>
+                                                            <option value="por_docente">Por Docente</option>
+                                                            <option value="comparativo">Comparativo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="formato">Formato</label>
+                                                        <select class="form-control" id="formato" name="formato">
+                                                            <option value="pdf">PDF</option>
+                                                            <option value="excel">Excel</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Botones de Períodos Rápidos -->
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <label class="form-label fw-bold text-primary">Períodos Rápidos:</label>
+                                                    <div class="btn-group-sm d-flex flex-wrap gap-1" role="group">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('hoy')">Hoy</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('ayer')">Ayer</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('ultimos7')">Últimos 7 días</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('ultimos30')">Últimos 30 días</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('ultimos90')">Últimos 90 días</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('esteMes')">Este mes</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('mesAnterior')">Mes anterior</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('esteAnio')">Este año</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="setPeriodo('anioAnterior')">Año anterior</button>
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm ml-2" onclick="limpiarFechas()">
+                                                            <i class="fas fa-eraser"></i> Limpiar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" id="filtrosAdicionales" style="display: none;">
+                                                <div class="col-md-12" id="filtroContainer">
+                                                    <!-- Los filtros se cargarán dinámicamente aquí -->
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <button type="button" class="btn btn-primary btn-lg" onclick="generarReporte()">
+                                                        <i class="fas fa-chart-line mr-2"></i>Generar Reporte
+                                                    </button>
+                                                    <a id="exportLink" href="#" class="btn btn-success btn-lg ml-2" onclick="exportarReporte(event)">
+                                                        <i class="fas fa-download mr-2"></i>Exportar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vista Previa del Reporte -->
+                        <div class="row mb-4" id="reportePreview" style="display: none;">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header" style="background: #17a2b8; color: white;">
+                                        <h5 class="mb-0"><i class="fas fa-eye mr-2"></i>Vista Previa del Reporte</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="reporteContent">
+                                            <!-- Contenido dinámico del reporte -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estadísticas Rápidas -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body p-3">
+                                        <div class="row text-center">
+                                            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <div class="stats-icon mr-2" style="background: rgba(40, 167, 69, 0.1); color: #28a745; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-user-check"></i>
+                                                    </div>
+                                                    <div class="text-left">
+                                                        <div class="h5 mb-0 text-success font-weight-bold">{{ $estadisticasRapidas['porcentaje_asistencia'] }}%</div>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">Asistencia</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <div class="stats-icon mr-2" style="background: rgba(220, 53, 69, 0.1); color: #dc3545; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-user-times"></i>
+                                                    </div>
+                                                    <div class="text-left">
+                                                        <div class="h5 mb-0 text-danger font-weight-bold">{{ number_format($estadisticasRapidas['total_inasistencias']) }}</div>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">Ausencias</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <div class="stats-icon mr-2" style="background: rgba(255, 193, 7, 0.1); color: #ffc107; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-clock"></i>
+                                                    </div>
+                                                    <div class="text-left">
+                                                        <div class="h5 mb-0 text-warning font-weight-bold">{{ number_format($estadisticasRapidas['total_tardanzas']) }}</div>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">Tardanzas</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <div class="stats-icon mr-2" style="background: rgba(23, 162, 184, 0.1); color: #17a2b8; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-check-circle"></i>
+                                                    </div>
+                                                    <div class="text-left">
+                                                        <div class="h5 mb-0 text-info font-weight-bold">{{ number_format($estadisticasRapidas['justificaciones_aprobadas']) }}</div>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">Justificadas</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Indicadores de Estado de Asistencia (5 puntos de colores) -->
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="text-center">
+                                                    <small class="text-muted mb-2 d-block">Indicadores de Estado</small>
+                                                    <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="badge badge-success mr-1" style="width: 12px; height: 12px; border-radius: 50%; padding: 0;"></span>
+                                                            <small class="text-muted">Presente</small>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="badge badge-danger mr-1" style="width: 12px; height: 12px; border-radius: 50%; padding: 0;"></span>
+                                                            <small class="text-muted">Ausente</small>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="badge badge-warning mr-1" style="width: 12px; height: 12px; border-radius: 50%; padding: 0;"></span>
+                                                            <small class="text-muted">Tarde</small>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="badge badge-info mr-1" style="width: 12px; height: 12px; border-radius: 50%; padding: 0;"></span>
+                                                            <small class="text-muted">Justificado</small>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="badge badge-secondary mr-1" style="width: 12px; height: 12px; border-radius: 50%; padding: 0;"></span>
+                                                            <small class="text-muted">Sin Registro</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gráficos de Tendencias -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header" style="background: #28a745; color: white;">
+                                        <h5 class="mb-0"><i class="fas fa-chart-area mr-2"></i>Tendencia de Asistencia Mensual</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="tendenciaChart" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header" style="background: #dc3545; color: white;">
+                                        <h5 class="mb-0"><i class="fas fa-chart-pie mr-2"></i>Distribución por Tipo</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="distribucionChart" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reportes Recientes -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header" style="background: #ffc107; color: white;">
+                                        <h5 class="mb-0"><i class="fas fa-history mr-2"></i>Reportes Generados Recientemente</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-primary">
+                                                    <tr>
+                                                        <th>Fecha Generación</th>
+                                                        <th>Tipo de Reporte</th>
+                                                        <th>Período</th>
+                                                        <th>Formato</th>
+                                                        <th>Generado por</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($reportesRecientes as $reporte)
+                                                    <tr>
+                                                        <td>{{ $reporte['fecha'] }}</td>
+                                                        <td><span class="badge badge-primary">{{ $reporte['tipo'] }}</span></td>
+                                                        <td>{{ $reporte['periodo'] }}</td>
+                                                        <td><span class="badge badge-success">{{ $reporte['formato'] }}</span></td>
+                                                        <td>{{ $reporte['generado_por'] }}</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">
+                                                                <i class="fas fa-download"></i> Descargar
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-info">
+                                                                <i class="fas fa-eye"></i> Ver
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted">
+                                                            <i class="fas fa-info-circle mr-2"></i>No hay reportes generados recientemente
+                                                        </td>
+                                                    </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                $(document).ready(function() {
+                    // Inicializar Select2 para todos los selects
+                    $('.form-control').each(function() {
+                        if ($(this).attr('id') !== 'tipo_reporte' && $(this).attr('id') !== 'formato' && $(this).attr('id') !== 'fecha_inicio' && $(this).attr('id') !== 'fecha_fin') {
+                            $(this).select2({
+                                theme: 'bootstrap-5',
+                                width: '100%',
+                                placeholder: function() {
+                                    return $(this).find('option:first').text() || 'Seleccionar...';
+                                },
+                                allowClear: true,
+                                minimumResultsForSearch: 0  // Always show search box
+                            });
+                        }
+                    });
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Collapse icon toggle
+                    const btn = document.querySelector('[data-target="#collapseReportes"]');
+                    const icon = btn.querySelector('.fas.fa-chevron-down');
+                    const collapse = document.getElementById('collapseReportes');
+                    collapse.addEventListener('show.bs.collapse', function () {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    });
+                    collapse.addEventListener('hide.bs.collapse', function () {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    });
+
+                    // Toggle filtros adicionales basados en tipo de reporte
+                    document.getElementById('tipo_reporte').addEventListener('change', function() {
+                        const filtrosAdicionales = document.getElementById('filtrosAdicionales');
+                        const filtroContainer = document.getElementById('filtroContainer');
+                        const tipoReporte = this.value;
+
+                        // Limpiar el contenedor
+                        filtroContainer.innerHTML = '';
+
+                        // Mostrar filtros según el tipo de reporte seleccionado
+                        if (tipoReporte === 'general') {
+                            filtrosAdicionales.style.display = 'none';
+                        } else {
+                            filtrosAdicionales.style.display = 'flex';
+
+                            let filterHtml = '';
+
+                            switch(tipoReporte) {
+                                case 'por_curso':
+                                    filterHtml = `
+                                        <div class="form-group">
+                                            <label for="curso_id">Curso</label>
+                                            <select class="form-control" id="curso_id" name="curso_id">
+                                                <option value="">Todos los cursos</option>
+                                                @foreach($cursos as $curso)
+                                                <option value="{{ $curso->curso_id }}">{{ $curso->nombre_completo ?? $curso->grado->nombre . ' ' . $curso->seccion->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    `;
+                                    break;
+                                case 'por_estudiante':
+                                    filterHtml = `
+                                        <div class="form-group">
+                                            <label for="estudiante_id">Estudiante</label>
+                                            <select class="form-control" id="estudiante_id" name="estudiante_id">
+                                                <option value="">Todos los estudiantes</option>
+                                                @foreach($estudiantes as $estudiante)
+                                                <option value="{{ $estudiante->estudiante_id }}">{{ $estudiante->persona->apellidos }}, {{ $estudiante->persona->nombres }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    `;
+                                    break;
+                                case 'por_docente':
+                                    filterHtml = `
+                                        <div class="form-group">
+                                            <label for="docente_id">Docente</label>
+                                            <select class="form-control" id="docente_id" name="docente_id">
+                                                <option value="">Todos los docentes</option>
+                                                @foreach($docentes as $docente)
+                                                <option value="{{ $docente->profesor_id }}">{{ $docente->persona->apellidos }}, {{ $docente->persona->nombres }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    `;
+                                    break;
+                                case 'comparativo':
+                                    filterHtml = `
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="nivel_id">Nivel Educativo</label>
+                                                    <select class="form-control" id="nivel_id" name="nivel_id">
+                                                        <option value="">Seleccionar nivel...</option>
+                                                        @foreach($niveles as $nivel)
+                                                        <option value="{{ $nivel->nivel_id }}">{{ $nivel->nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="curso_id">Curso</label>
+                                                    <select class="form-control" id="curso_id" name="curso_id" disabled>
+                                                        <option value="">Seleccionar curso...</option>
+                                                @foreach($cursos as $curso)
+                                                <option value="{{ $curso->curso_id }}" data-nivel="{{ $curso->grado->nivel_id }}">{{ $curso->nombre_completo ?? $curso->grado->nombre . ' ' . $curso->seccion->nombre }}</option>
+                                                @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="estudiante_id">Estudiante</label>
+                                                    <select class="form-control" id="estudiante_id" name="estudiante_id" disabled>
+                                                        <option value="">Seleccionar estudiante...</option>
+                                                        @foreach($estudiantes as $estudiante)
+                                                        <option value="{{ $estudiante->estudiante_id }}" data-curso="{{ $estudiante->matricula?->curso_id }}">{{ $estudiante->persona->apellidos }}, {{ $estudiante->persona->nombres }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="docente_id">Docente</label>
+                                                    <select class="form-control" id="docente_id" name="docente_id" disabled>
+                                                        <option value="">Seleccionar docente...</option>
+                                                @foreach($docentes as $docente)
+                                                <option value="{{ $docente->profesor_id }}">{{ $docente->persona->apellidos }}, {{ $docente->persona->nombres }}</option>
+                                                @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    break;
+                            }
+
+                            filtroContainer.innerHTML = filterHtml;
+
+                            // Re-inicializar select2 para los nuevos elementos
+                            setTimeout(() => {
+                                $('.form-control').each(function() {
+                                    if ($(this).attr('id') !== 'tipo_reporte' && $(this).attr('id') !== 'formato' && $(this).attr('id') !== 'fecha_inicio' && $(this).attr('id') !== 'fecha_fin') {
+                                        $(this).select2({
+                                            theme: 'bootstrap-5',
+                                            width: '100%',
+                                            placeholder: function() {
+                                                return $(this).find('option:first').text() || 'Seleccionar...';
+                                            },
+                                            allowClear: true,
+                                            minimumResultsForSearch: 0  // Always show search box
+                                        });
+                                    }
+                                });
+
+                                // Configurar filtros en cascada para reporte comparativo
+                                if (tipoReporte === 'comparativo') {
+                                    configurarFiltrosCascada();
+                                }
+                            }, 100);
+                        }
+                    });
+
+                    // Inicializar gráficos
+                    initCharts();
+                });
+
+                function initCharts() {
+                    // Datos de tendencia mensual desde PHP
+                    const tendenciaData = @json($tendenciaMensual);
+                    const labels = tendenciaData.map(item => item.mes);
+                    const porcentajes = tendenciaData.map(item => item.porcentaje);
+
+                    // Tendencia mensual
+                    const ctxTendencia = document.getElementById('tendenciaChart').getContext('2d');
+                    new Chart(ctxTendencia, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Asistencia Promedio (%)',
+                                data: porcentajes,
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    max: 100
+                                }
+                            }
+                        }
+                    });
+
+                    // Datos de distribución desde PHP
+                    const distribucionData = @json($distribucionTipos);
+
+                    // Distribución por tipo
+                    const ctxDistribucion = document.getElementById('distribucionChart').getContext('2d');
+                    new Chart(ctxDistribucion, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Presente', 'Ausente', 'Tarde', 'Justificado'],
+                            datasets: [{
+                                data: [distribucionData.presente, distribucionData.ausente, distribucionData.tarde, distribucionData.justificado],
+                                backgroundColor: [
+                                    '#28a745',
+                                    '#dc3545',
+                                    '#ffc107',
+                                    '#17a2b8'
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function generarReporte() {
+                    // Validar que se haya seleccionado un período
+                    const fechaInicio = document.getElementById('fecha_inicio').value;
+                    const fechaFin = document.getElementById('fecha_fin').value;
+
+                    if (!fechaInicio || !fechaFin) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Período requerido',
+                            text: 'Por favor selecciona las fechas de inicio y fin para generar el reporte.',
+                            confirmButtonText: 'Entendido'
+                        });
+                        return;
+                    }
+
+                    // Recopilar todos los filtros adicionales
+                    const tipoReporte = document.getElementById('tipo_reporte').value;
+                    const nivelId = document.getElementById('nivel_id')?.value || '';
+                    const cursoId = document.getElementById('curso_id')?.value || '';
+                    const estudianteId = document.getElementById('estudiante_id')?.value || '';
+                    const docenteId = document.getElementById('docente_id')?.value || '';
+
+                    // Mostrar loading en la vista previa
+                    document.getElementById('reportePreview').style.display = 'block';
+                    const reporteContent = document.getElementById('reporteContent');
+                    reporteContent.innerHTML = `
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <p class="mt-2 mb-3">Generando vista previa del reporte...</p>
+
+                            <!-- Indicadores de Carga (5 puntos de colores animados) -->
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="loading-dots">
+                                        <span class="dot dot-1"></span>
+                                        <span class="dot dot-2"></span>
+                                        <span class="dot dot-3"></span>
+                                        <span class="dot dot-4"></span>
+                                        <span class="dot dot-5"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <style>
+                            .loading-dots {
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                            }
+
+                            .dot {
+                                width: 12px;
+                                height: 12px;
+                                border-radius: 50%;
+                                background-color: #e9ecef;
+                                animation: loadingPulse 1.5s ease-in-out infinite;
+                            }
+
+                            .dot-1 { animation-delay: 0s; }
+                            .dot-2 { animation-delay: 0.2s; }
+                            .dot-3 { animation-delay: 0.4s; }
+                            .dot-4 { animation-delay: 0.6s; }
+                            .dot-5 { animation-delay: 0.8s; }
+
+                            @keyframes loadingPulse {
+                                0%, 80%, 100% {
+                                    transform: scale(0.8);
+                                    background-color: #e9ecef;
+                                }
+                                40% {
+                                    transform: scale(1.2);
+                                    background-color: #007bff;
+                                }
+                            }
+                            </style>
+                        </div>
+                    `;
+
+                    // Hacer petición AJAX para obtener estadísticas filtradas
+                    const estadisticasUrl = `/asistencia/api/estadisticas-filtradas?fecha_inicio=${encodeURIComponent(fechaInicio)}&fecha_fin=${encodeURIComponent(fechaFin)}&tipo_reporte=${encodeURIComponent(tipoReporte)}&nivel_id=${encodeURIComponent(nivelId)}&curso_id=${encodeURIComponent(cursoId)}&estudiante_id=${encodeURIComponent(estudianteId)}&docente_id=${encodeURIComponent(docenteId)}`;
+
+                    fetch(estadisticasUrl, {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(estadisticasData => {
+                        if (estadisticasData.success) {
+                            // Actualizar gráficos con datos filtrados
+                            actualizarGraficos(estadisticasData.tendencia_mensual, estadisticasData.distribucion_tipos);
+
+                            // Construir URL para obtener datos de tabla
+                            let tablaUrl = `/asistencia/api/tabla-asistencias?fecha_inicio=${encodeURIComponent(fechaInicio)}&fecha_fin=${encodeURIComponent(fechaFin)}&per_page=1000&tipo_reporte=${encodeURIComponent(tipoReporte)}&nivel_id=${encodeURIComponent(nivelId)}&curso_id=${encodeURIComponent(cursoId)}&estudiante_id=${encodeURIComponent(estudianteId)}&docente_id=${encodeURIComponent(docenteId)}`;
+
+                            // Obtener datos de tabla para estadísticas detalladas
+                            return fetch(tablaUrl, {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                                }
+                            });
+                        } else {
+                            throw new Error(estadisticasData.message || 'Error al obtener estadísticas');
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(tablaData => {
+                        if (tablaData.success) {
+                            const estadisticas = tablaData.estadisticas;
+                            const estadisticasAdicionales = tablaData.estadisticas_adicionales || {};
+                            const estudiantesRiesgo = estadisticasAdicionales.estudiantes_riesgo || [];
+
+                            const totalRegistros = estadisticas.total_registros;
+                            const presentes = estadisticas.total_presentes;
+                            const ausentes = estadisticas.total_ausentes;
+                            const tardanzas = estadisticas.total_tardanzas || 0;
+                            const justificados = estadisticas.total_justificados || 0;
+
+                            reporteContent.innerHTML = `
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    Vista previa generada exitosamente para el período ${fechaInicio} - ${fechaFin}. Utiliza el botón "Exportar" para descargar el archivo completo.
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5><i class="fas fa-chart-bar mr-2"></i>Resumen Ejecutivo</h5>
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Total de Registros Analizados
+                                                <span class="badge badge-primary badge-pill">${totalRegistros}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Estudiantes Únicos
+                                                <span class="badge badge-secondary badge-pill">${estadisticasAdicionales.total_estudiantes_unicos || 0}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Promedio de Asistencia General
+                                                <span class="badge badge-success badge-pill">${estadisticas.porcentaje_asistencia}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Asistencia Diaria Promedio
+                                                <span class="badge badge-info badge-pill">${estadisticasAdicionales.promedio_asistencia_diaria || 0}%</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Total de Presentes
+                                                <span class="badge badge-success badge-pill">${presentes}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Total de Ausentes
+                                                <span class="badge badge-danger badge-pill">${ausentes}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Total de Tardanzas
+                                                <span class="badge badge-warning badge-pill">${tardanzas}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Total de Justificados
+                                                <span class="badge badge-info badge-pill">${justificados}</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Días Analizados
+                                                <span class="badge badge-light badge-pill">${estadisticasAdicionales.dias_analizados || 0}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5><i class="fas fa-exclamation-triangle mr-2 text-warning"></i>Alertas de Riesgo</h5>
+                                        ${estudiantesRiesgo.length > 0 ?
+                                            `<div class="alert alert-warning">
+                                                <strong>${estudiantesRiesgo.length} estudiante(s) en riesgo</strong> (asistencia < 70%)
+                                                <ul class="mb-0 mt-2">
+                                                    ${estudiantesRiesgo.slice(0, 5).map(est =>
+                                                        `<li><small>${est.nombre} (${est.curso}) - ${est.porcentaje}%</small></li>`
+                                                    ).join('')}
+                                                    ${estudiantesRiesgo.length > 5 ? `<li><small>...y ${estudiantesRiesgo.length - 5} más</small></li>` : ''}
+                                                </ul>
+                                            </div>` :
+                                            `<div class="alert alert-success">
+                                                <i class="fas fa-check-circle mr-2"></i>
+                                                No hay estudiantes en riesgo de deserción por asistencia baja.
+                                            </div>`
+                                        }
+
+                                        <h6 class="mt-3"><i class="fas fa-chart-pie mr-2"></i>Distribución por Tipo:</h6>
+                                        <div class="row text-center">
+                                            <div class="col-3">
+                                                <div class="card border-success">
+                                                    <div class="card-body p-2">
+                                                        <h6 class="text-success">${presentes}</h6>
+                                                        <small class="text-muted">Presentes</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="card border-danger">
+                                                    <div class="card-body p-2">
+                                                        <h6 class="text-danger">${ausentes}</h6>
+                                                        <small class="text-muted">Ausentes</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="card border-warning">
+                                                    <div class="card-body p-2">
+                                                        <h6 class="text-warning">${tardanzas}</h6>
+                                                        <small class="text-muted">Tardanzas</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="card border-info">
+                                                    <div class="card-body p-2">
+                                                        <h6 class="text-info">${justificados}</h6>
+                                                        <small class="text-muted">Justif.</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <h6><i class="fas fa-lightbulb mr-2 text-primary"></i>Insights Inteligentes:</h6>
+                                            <div class="alert alert-light">
+                                                <small>
+                                                    ${generarInsights(totalRegistros, estadisticasAdicionales, estudiantesRiesgo.length)}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            throw new Error(tablaData.message || 'Error al obtener datos de tabla');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        reporteContent.innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                Error al generar la vista previa: ${error.message || 'Error desconocido'}
+                            </div>
+                        `;
+                    });
+
+                    // Scroll suave hacia la vista previa
+                    document.getElementById('reportePreview').scrollIntoView({ behavior: 'smooth' });
+                }
+
+                function actualizarGraficos(tendenciaMensual, distribucionTipos) {
+                    // Actualizar gráfico de tendencia mensual
+                    const ctxTendencia = document.getElementById('tendenciaChart').getContext('2d');
+                    const labels = tendenciaMensual.map(item => item.mes);
+                    const porcentajes = tendenciaMensual.map(item => item.porcentaje);
+
+                    if (window.tendenciaChartInstance) {
+                        window.tendenciaChartInstance.destroy();
+                    }
+
+                    window.tendenciaChartInstance = new Chart(ctxTendencia, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Asistencia Promedio (%)',
+                                data: porcentajes,
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    max: 100
+                                }
+                            }
+                        }
+                    });
+
+                    // Actualizar gráfico de distribución por tipo
+                    const ctxDistribucion = document.getElementById('distribucionChart').getContext('2d');
+
+                    if (window.distribucionChartInstance) {
+                        window.distribucionChartInstance.destroy();
+                    }
+
+                    window.distribucionChartInstance = new Chart(ctxDistribucion, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Presente', 'Ausente', 'Tarde', 'Justificado'],
+                            datasets: [{
+                                data: [
+                                    distribucionTipos.presente || 0,
+                                    distribucionTipos.ausente || 0,
+                                    distribucionTipos.tarde || 0,
+                                    distribucionTipos.justificado || 0
+                                ],
+                                backgroundColor: [
+                                    '#28a745',
+                                    '#dc3545',
+                                    '#ffc107',
+                                    '#17a2b8'
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function generarInsights(totalRegistros, estadisticasAdicionales, estudiantesRiesgo) {
+                    let insights = [];
+
+                    if (totalRegistros === 0) {
+                        return "No hay suficientes datos para generar insights.";
+                    }
+
+                    const promedioDiario = estadisticasAdicionales.promedio_asistencia_diaria || 0;
+                    const estudiantesUnicos = estadisticasAdicionales.total_estudiantes_unicos || 0;
+                    const diasAnalizados = estadisticasAdicionales.dias_analizados || 0;
+
+                    if (promedioDiario >= 90) {
+                        insights.push("Excelente tasa de asistencia general (≥90%).");
+                    } else if (promedioDiario >= 80) {
+                        insights.push("Buena tasa de asistencia general (80-89%).");
+                    } else if (promedioDiario >= 70) {
+                        insights.push("Tasa de asistencia aceptable (70-79%), se recomienda monitoreo.");
+                    } else {
+                        insights.push("Tasa de asistencia baja (<70%), requiere atención inmediata.");
+                    }
+
+                    if (estudiantesRiesgo > 0) {
+                        insights.push(`${estudiantesRiesgo} estudiante(s) identificado(s) con riesgo de deserción.`);
+                    }
+
+                    if (diasAnalizados > 30) {
+                        insights.push("Análisis a largo plazo permite identificar tendencias estacionales.");
+                    }
+
+                    if (estudiantesUnicos > 0 && diasAnalizados > 0) {
+                        const registrosPromedio = totalRegistros / estudiantesUnicos;
+                        if (registrosPromedio > diasAnalizados * 0.8) {
+                            insights.push("Cobertura de registro muy buena (>80% de días analizados).");
+                        }
+                    }
+
+                    return insights.length > 0 ? insights.join(" ") : "Análisis completado exitosamente.";
+                }
+
+                function setPeriodo(tipo) {
+                    const hoy = new Date();
+                    let fechaInicio, fechaFin;
+
+                    switch(tipo) {
+                        case 'hoy':
+                            fechaInicio = fechaFin = hoy;
+                            break;
+                        case 'ayer':
+                            const ayer = new Date(hoy);
+                            ayer.setDate(hoy.getDate() - 1);
+                            fechaInicio = fechaFin = ayer;
+                            break;
+                        case 'ultimos7':
+                            fechaInicio = new Date(hoy);
+                            fechaInicio.setDate(hoy.getDate() - 6); // 7 días incluyendo hoy
+                            fechaFin = hoy;
+                            break;
+                        case 'ultimos30':
+                            fechaInicio = new Date(hoy);
+                            fechaInicio.setDate(hoy.getDate() - 29); // 30 días incluyendo hoy
+                            fechaFin = hoy;
+                            break;
+                        case 'ultimos90':
+                            fechaInicio = new Date(hoy);
+                            fechaInicio.setDate(hoy.getDate() - 89); // 90 días incluyendo hoy
+                            fechaFin = hoy;
+                            break;
+                        case 'esteMes':
+                            fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+                            fechaFin = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+                            break;
+                        case 'mesAnterior':
+                            fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
+                            fechaFin = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
+                            break;
+                        case 'esteAnio':
+                            fechaInicio = new Date(hoy.getFullYear(), 0, 1);
+                            fechaFin = new Date(hoy.getFullYear(), 11, 31);
+                            break;
+                        case 'anioAnterior':
+                            fechaInicio = new Date(hoy.getFullYear() - 1, 0, 1);
+                            fechaFin = new Date(hoy.getFullYear() - 1, 11, 31);
+                            break;
+                    }
+
+                    // Formatear fechas para inputs HTML (YYYY-MM-DD)
+                    const fechaInicioStr = fechaInicio.toISOString().split('T')[0];
+                    const fechaFinStr = fechaFin.toISOString().split('T')[0];
+
+                    document.getElementById('fecha_inicio').value = fechaInicioStr;
+                    document.getElementById('fecha_fin').value = fechaFinStr;
+                }
+
+                function limpiarFechas() {
+                    document.getElementById('fecha_inicio').value = '';
+                    document.getElementById('fecha_fin').value = '';
+                }
+
+                function configurarFiltrosCascada() {
+                    const nivelSelect = document.getElementById('nivel_id');
+                    const cursoSelect = document.getElementById('curso_id');
+                    const estudianteSelect = document.getElementById('estudiante_id');
+                    const docenteSelect = document.getElementById('docente_id');
+
+                    // Función para mostrar/ocultar opciones
+                    function filtrarOpciones(selectElement, filtroCallback) {
+                        const options = selectElement.querySelectorAll('option');
+                        let hasVisibleOptions = false;
+
+                        options.forEach(option => {
+                            if (option.value === '') {
+                                // Siempre mostrar la opción vacía
+                                option.style.display = 'block';
+                            } else {
+                                const mostrar = filtroCallback ? filtroCallback(option) : true;
+                                option.style.display = mostrar ? 'block' : 'none';
+                                if (mostrar && option.value !== '') {
+                                    hasVisibleOptions = true;
+                                }
+                            }
+                        });
+
+                        return hasVisibleOptions;
+                    }
+
+                    // Función para reinicializar Select2
+                    function reinicializarSelect2(selectElement, placeholder) {
+                        $(selectElement).select2('destroy').select2({
+                            theme: 'bootstrap-5',
+                            width: '100%',
+                            placeholder: placeholder,
+                            allowClear: true,
+                            minimumResultsForSearch: 0
+                        });
+                    }
+
+                    // Event listener para nivel educativo
+                    nivelSelect.addEventListener('change', function() {
+                        const nivelId = this.value;
+
+                        // Limpiar selects dependientes
+                        cursoSelect.value = '';
+                        estudianteSelect.value = '';
+                        docenteSelect.value = '';
+
+                        if (nivelId) {
+                            // Habilitar curso y filtrar opciones por nivel
+                            cursoSelect.disabled = false;
+
+                            const hasCourses = filtrarOpciones(cursoSelect, (option) => {
+                                const dataNivel = option.getAttribute('data-nivel');
+                                return dataNivel === nivelId;
+                            });
+
+                            if (hasCourses) {
+                                reinicializarSelect2(cursoSelect, 'Seleccionar curso...');
+                            }
+                        } else {
+                            // Deshabilitar todos los selects dependientes
+                            cursoSelect.disabled = true;
+                            estudianteSelect.disabled = true;
+                            docenteSelect.disabled = true;
+
+                            // Mostrar todas las opciones nuevamente
+                            filtrarOpciones(cursoSelect, () => true);
+                            filtrarOpciones(estudianteSelect, () => true);
+                            filtrarOpciones(docenteSelect, () => true);
+                        }
+
+                        // Deshabilitar estudiante y docente
+                        estudianteSelect.disabled = true;
+                        docenteSelect.disabled = true;
+                    });
+
+                    // Event listener para curso
+                    cursoSelect.addEventListener('change', function() {
+                        const cursoId = this.value;
+
+                        // Limpiar selects dependientes
+                        estudianteSelect.value = '';
+                        docenteSelect.value = '';
+
+                        if (cursoId) {
+                            // Habilitar estudiante y filtrar opciones por curso
+                            estudianteSelect.disabled = false;
+
+                            const hasStudents = filtrarOpciones(estudianteSelect, (option) => {
+                                const dataCurso = option.getAttribute('data-curso');
+                                return dataCurso === cursoId;
+                            });
+
+                            if (hasStudents) {
+                                reinicializarSelect2(estudianteSelect, 'Seleccionar estudiante...');
+                            }
+
+                            // Habilitar docente
+                            docenteSelect.disabled = false;
+                        } else {
+                            // Deshabilitar estudiante
+                            estudianteSelect.disabled = true;
+
+                            // Mostrar todas las opciones de estudiante nuevamente
+                            filtrarOpciones(estudianteSelect, () => true);
+                        }
+                    });
+
+                    // Event listener para estudiante
+                    estudianteSelect.addEventListener('change', function() {
+                        const estudianteId = this.value;
+
+                        // Limpiar docente
+                        docenteSelect.value = '';
+
+                        if (estudianteId) {
+                            // Aquí podríamos filtrar docentes por estudiante si fuera necesario
+                            // Por ahora, solo aseguramos que docente esté habilitado
+                            docenteSelect.disabled = false;
+                        }
+                    });
+                }
+
+                function exportarReporte() {
+                    const formato = document.getElementById('formato').value;
+                    const tipo = document.getElementById('tipo_reporte').value;
+                    const fechaInicio = document.getElementById('fecha_inicio').value;
+                    const fechaFin = document.getElementById('fecha_fin').value;
+
+                    if (!fechaInicio || !fechaFin) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Fechas requeridas',
+                            text: 'Por favor selecciona las fechas de inicio y fin para exportar el reporte.',
+                            confirmButtonText: 'Entendido'
+                        });
+                        return;
+                    }
+
+                    // Recopilar todos los filtros adicionales
+                    const tipoReporte = document.getElementById('tipo_reporte').value;
+                    const nivelId = document.getElementById('nivel_id')?.value || '';
+                    const cursoId = document.getElementById('curso_id')?.value || '';
+                    const estudianteId = document.getElementById('estudiante_id')?.value || '';
+                    const docenteId = document.getElementById('docente_id')?.value || '';
+
+                    if (formato === 'pdf') {
+                        // Construir URL con todos los parámetros
+                        let url = `/asistencia/exportar/pdf/admin?fecha_inicio=${encodeURIComponent(fechaInicio)}&fecha_fin=${encodeURIComponent(fechaFin)}&formato=${encodeURIComponent(formato)}&tipo_reporte=${encodeURIComponent(tipo)}`;
+
+                        if (tipoReporte) url += `&tipo_reporte=${encodeURIComponent(tipoReporte)}`;
+                        if (nivelId) url += `&nivel_id=${encodeURIComponent(nivelId)}`;
+                        if (cursoId) url += `&curso_id=${encodeURIComponent(cursoId)}`;
+                        if (estudianteId) url += `&estudiante_id=${encodeURIComponent(estudianteId)}`;
+                        if (docenteId) url += `&docente_id=${encodeURIComponent(docenteId)}`;
+
+                        // Abrir en nueva ventana para descarga
+                        window.open(url, '_blank');
+                    } else {
+                        // Para otros formatos, mostrar mensaje
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Funcionalidad en desarrollo',
+                            text: `La exportación a ${formato.toUpperCase()} estará disponible próximamente.`,
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
+                }
+
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section('scripts')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@endsection
+
+@endsection

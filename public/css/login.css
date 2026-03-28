@@ -1,0 +1,227 @@
+body {
+    /*background-image: url("{{ asset('imagenes/imgFondoIntranet.png') }}"); */
+    background-color: #f6f4f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Cuando el ancho de pantalla sea menor o igual a 576px (Bootstrap sm) */
+@media (max-width: 576px) {
+    body {
+        background-color: #ffffff;
+    }
+}
+
+.no-copy {
+    pointer-events: none;
+    user-select: none;
+}
+
+.login-wrapper {
+    background-color: white;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: row;
+    padding: 3rem;
+}
+
+.left-panel {
+    flex: 1;
+    padding-right: 2rem;
+}
+
+.right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    height: 3rem;
+}
+
+.btn-primary {
+    border-radius: 0.7rem;
+    padding: 0.56rem 2.4rem;
+    background-color: #104E87 !important;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #0E4678;
+}
+
+.text-muted a {
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.text-muted a:hover {
+    text-decoration: underline;
+}
+
+.bottom-links {
+    font-size: 0.85rem;
+    margin-top: 2rem;
+    color: #5f6368;
+}
+
+
+@media (max-width: 768px) {
+    .login-wrapper {
+        flex-direction: column;
+        padding: 2rem;
+    }
+
+    .left-panel {
+        padding-right: 0;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Contenedor personalizado estilo Google */
+.google-input {
+    position: relative;
+    margin-bottom: 0.1rem;
+
+    font-family: "Poppins", sans-serif !important;
+}
+
+/* Input base */
+.google-input input {
+    width: 100%;
+    padding: 1rem 0.75rem 0.25rem 0.75rem;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: .5rem;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Borde cuando está en focus */
+.google-input input:focus {
+    border-color: #084e90;
+    box-shadow: 0 0 0 1px #084e90;
+}
+
+.google-input input:is(:invalid, .is-invalid) {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 1px #dc3545;
+}
+
+.google-input input:is(:invalid, .is-invalid)+label {
+    color: #dc3545 !important;
+    font-weight: bold;
+}
+
+
+/* Label flotante */
+.google-input label {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    color: #777;
+    font-size: 0.9rem;
+    pointer-events: none;
+    transition: all 0.2s ease;
+
+}
+
+/* Efecto al escribir o enfocar */
+.google-input input:focus+label,
+.google-input input:not(:placeholder-shown)+label {
+    top: 0.1rem;
+    font-size: 0.75rem;
+    color: #084e90;
+    background: #fff;
+    padding: 0 0.25rem;
+    font-weight: bold;
+}
+
+/* Animación Google */
+.google-btn {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s ease-in-out;
+    background-color: #fff !important;
+    border-radius: 16px !important;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-family: 'quicksand', sans-serif;
+    border: 2px solid #c7c0b9;
+}
+
+.google-btn.hide {
+    opacity: 0;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+
+.google-btn:hover {
+    background-color: #f4ece8b7 !important;
+    border: 2px solid #c7c0b9;
+    transform: scale(1.01);
+
+}
+
+/* Efecto pulso */
+.google-btn:hover span {
+    animation: pulse 1s infinite;
+}
+
+/* Animación Google */
+
+/* Botón Siguiente Pro */
+.next-btn {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s ease-in-out;
+    border-radius: 16px !important;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-family: 'quicksand', sans-serif;
+    background-color: #d7cabe
+}
+
+.next-btn.hide {
+    opacity: 0;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+.next-btn:hover {
+    background-color: #c9b4a2 !important;
+    transform: scale(1.01);
+
+}
+
+/* Efecto pulso */
+.next-btn:hover span {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        text-shadow: 0 0 0px #fff;
+    }
+
+    50% {
+        text-shadow: 0 0 8px #fff;
+    }
+
+    100% {
+        text-shadow: 0 0 0px #fff;
+    }
+}

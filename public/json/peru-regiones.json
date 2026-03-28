@@ -1,0 +1,905 @@
+{
+    "Amazonas": {
+        "Chachapoyas": [
+            "Chachapoyas",
+            "Asunción",
+            "Balsas",
+            "Cheto",
+            "Chiliquin",
+            "Chuquibamba",
+            "Granada",
+            "Huancas",
+            "La Jalca",
+            "Leimebamba",
+            "Levanto",
+            "Magdalena",
+            "Mariscal Castilla",
+            "Molinopampa",
+            "Montevideo",
+            "Olleros",
+            "Quinjalca",
+            "San Francisco de Daguas",
+            "San Isidro de Maino",
+            "Soloco",
+            "Sonche"
+        ],
+        "Bagua": [
+            "Bagua",
+            "Aramango",
+            "Copallin",
+            "El Parco",
+            "Imaza",
+            "La Peca"
+        ],
+        "Bongara": [
+            "Jumbilla",
+            "Chisquilla",
+            "Churuja",
+            "Corosha",
+            "Cuispes",
+            "Florida",
+            "Jazan",
+            "Recta",
+            "San Carlos",
+            "Shipasbamba",
+            "Valera",
+            "Yambrasbamba"
+        ],
+        "Condorcanqui": [
+            "Nieva",
+            "El Cenepa",
+            "Río Santiago"
+        ],
+        "Luya": [
+            "Lamud",
+            "Camporredondo",
+            "Cocabamba",
+            "Colcamar",
+            "Conila",
+            "Inguilpata",
+            "Lámud",
+            "Longuita",
+            "Lonya Grande",
+            "Luya",
+            "Luya Viejo",
+            "Maria",
+            "Ocalli",
+            "Ocumal",
+            "Pisuquia",
+            "Providencia",
+            "San Cristóbal",
+            "San Francisco de Yeso",
+            "San Jerónimo",
+            "San Juan de Lopecancha",
+            "Santa Catalina",
+            "Tabaconas",
+            "Trita"
+        ],
+        "Rodriguez de Mendoza": [
+            "San Nicolás",
+            "Chirimoto",
+            "Cocachacra",
+            "Huambo",
+            "Limabamba",
+            "Longar",
+            "Mariscal Benavides",
+            "Milpuc",
+            "Omia",
+            "Santa Rosa",
+            "Totora",
+            "Vista Alegre"
+        ],
+        "Utcubamba": [
+            "Bagua Grande",
+            "Cajaruro",
+            "Cumba",
+            "El Milagro",
+            "Jamalca",
+            "Lonya Chico",
+            "Yamon"
+        ]
+    },
+    
+    "Ancash": {
+        "Huaraz": [
+            "Huaraz",
+            "Cochabamba",
+            "Colcabamba",
+            "Huanchay",
+            "Independencia"
+        ],
+        "Aija": [
+            "Aija",
+            "Coris",
+            "Huacllan",
+            "Succha"
+        ],
+        "Antonio Raymondi": [
+            "Llamellin",
+            "Aczo",
+            "Chaccho",
+            "Chingas",
+            "Mirgas",
+            "San Juan de Rontoy",
+            "San Luis",
+            "Santo Toribio",
+            "Tiaparo"
+        ],
+        "Asunción": [
+            "Chacas",
+            "Acochaca",
+            "Chiquian",
+            "Cochabamba",
+            "Huari",
+            "Paucas"
+        ],
+        "Bolognesi": [
+            "Chiquian",
+            "Abelardo Pardo Lezameta",
+            "Antonio Raymondi",
+            "Aquia",
+            "Bolognesi",
+            "Cajacay",
+            "Canis",
+            "Colquioc",
+            "Huallanca",
+            "Huasta",
+            "Huayllacayán",
+            "La Primavera",
+            "Mangas",
+            "Pacllon",
+            "San Miguel de Corpanqui",
+            "Ticllos"
+        ]
+    },
+    "Apurimac": {
+        "Abancay": [
+            "Abancay",
+            "Chacoche",
+            "Circa",
+            "Curahuasi",
+            "Huanipaca",
+            "Lambrama",
+            "Pichirhua",
+            "San Pedro de Cachora",
+            "Tamburco"
+        ],
+        "Andahuaylas": [
+            "Andahuaylas",
+            "Andarapa",
+            "Chiara",
+            "Huancarama",
+            "Huancaray",
+            "Huayana",
+            "Kishuara",
+            "Pacobamba",
+            "Pacucha",
+            "Pampachiri",
+            "Pomacocha",
+            "San Antonio de Cachi",
+            "San Jerónimo",
+            "San Miguel de Chaccrampa",
+            "Santa María de Chicmo",
+            "Talavera",
+            "Tumay Huaraca",
+            "Turpo"
+        ],
+        "Antabamba": [
+            "Antabamba",
+            "El Oro",
+            "Huaquirca",
+            "Juan Espinoza Medrano",
+            "Oropesa"
+        ],
+        "Aymaraes": [
+            "Chalhuanca",
+            "Capaya",
+            "Caraybamba",
+            "Chapimarca",
+            "Colcabamba",
+            "Cotaruse",
+            "Ihuayllo",
+            "Justicia",
+            "Llusco",
+            "San Juan de Chacña",
+            "San Miguel de Aymaraes",
+            "Santa Rosa",
+            "Tiraco"
+        ],
+        "Cotabambas": [
+            "Tambobamba",
+            "Cotabambas",
+            "Coyllurqui",
+            "Haquira"
+        ],
+        "Grau": [
+            "Chuquibambilla",
+            "Curpahuasi",
+            "Gamarra",
+            "Huayllati",
+            "Mamara",
+            "Mariscal Gamarra",
+            "Micaela Bastidas",
+            "Pataypampa",
+            "Progreso",
+            "San Antonio",
+            "Santa Rosa",
+            "Turpay"
+        ]
+    },
+    "Arequipa": {
+        "Arequipa": [
+            "Arequipa",
+            "Alto Selva Alegre",
+            "Cayma",
+            "Cerro Colorado",
+            "Jacobo Hunter",
+            "José Luis Bustamante y Rivero",
+            "Mariano Melgar",
+            "Miraflores",
+            "Paucarpata",
+            "Socabaya",
+            "Tiabaya",
+            "Yanahuara"
+        ],
+        "Camana": [
+            "Camana",
+            "José María Quimper",
+            "Mariano Nicolás Valcárcel",
+            "Mariscal Cáceres",
+            "Nicolás de Piérola"
+        ],
+        "Caraveli": [
+            "Caraveli",
+            "Acari",
+            "Atico",
+            "Bella Unión",
+            "Cahuacho",
+            "Chala",
+            "Chaparra",
+            "Huancarqui",
+            "Jaqui",
+            "Lomas",
+            "Quicacha",
+            "Yauca"
+        ],
+        "Castilla": [
+            "Molina",
+            "Aplao",
+            "Andagua",
+            "Ayo",
+            "Chachas",
+            "Chilcaymarca",
+            "Choco",
+            "Huanca",
+            "Huancarqui",
+            "Iray",
+            "Orcopampa",
+            "Pampacolca",
+            "Tipan",
+            "Uñon",
+            "Uraca"
+        ],
+        "Caylloma": [
+            "Chivay",
+            "Achoma",
+            "Cabanaconde",
+            "Callalli",
+            "Caylloma",
+            "Coporaque",
+            "Huambo",
+            "Huanca",
+            "Lari",
+            "Lluta",
+            "Maca",
+            "Madrigal",
+            "Majes",
+            "San Antonio de Chuca",
+            "Sibayo",
+            "Tapay",
+            "Tisco"
+        ],
+        "Condesuyos": [
+            "Chuquibamba",
+            "Andaray",
+            "Cayarani",
+            "Chichas",
+            "Iray",
+            "Rio Grande",
+            "Salamanca",
+            "Yanaquihua"
+        ],
+        "Islay": [
+            "Mollendo",
+            "Cocachacra",
+            "Dean Valdivia",
+            "Islay",
+            "Mejia",
+            "Mollendo",
+            "Punta de Bombon"
+        ],
+        "La Union": [
+            "Cotahuasi",
+            "Alca",
+            "Charcana",
+            "Huaynacotas",
+            "Pampamarca",
+            "Puyca",
+            "Quechualla",
+            "Sayla",
+            "Tauria",
+            "Tomepampa",
+            "Toro"
+        ]
+    },
+
+  "Ayacucho": {
+    "Huamanga": [
+      "Ayacucho",
+      "Acocro",
+      "Ayna",
+      "Chiara",
+      "Ocros",
+      "Pacaycasa",
+      "Quinua",
+      "San José de Ticllas",
+      "San Juan Bautista",
+      "Santillana",
+      "Sancos",
+      "Santiago de Pischa",
+      "Secce",
+      "Shunguyoc",
+      "Socos",
+      "Tambillo",
+      "Vinchos"
+    ],
+    "Cangallo": [
+      "Cangallo",
+      "Chuschi",
+      "Los Morochucos",
+      "María Parado de Bellido",
+      "Paras",
+      "Totos"
+    ],
+    "Vilcas Huamán": [
+      "Vilcas Huamán",
+      "Accomarca",
+      "Carhuanca",
+      "Concepción",
+      "Huambalpa",
+      "Independencia"
+    ]
+  },
+  "Cajamarca": {
+    "Cajamarca": [
+      "Cajamarca",
+      "Asunción",
+      "Chetilla",
+      "Condebamba",
+      "Cuscol",
+      "LLacanora",
+      "Los Baños del Inca",
+      "Magdalena",
+      "Matara",
+      "Namora",
+      "San Juan"
+    ],
+    "Celendín": [
+      "Celendín",
+      "Chumuch",
+      "Cortegana",
+      "Huasmin",
+      "José Gálvez",
+      "La Libertad de Pallán",
+      "Miguel Iglesias",
+      "Oxamarca",
+      "Sorochuco",
+      "Sucre"
+    ],
+    "Chota": [
+      "Chota",
+      "Anguía",
+      "Chadin",
+      "Chalamarca",
+      "Chiguirip",
+      "Chimban",
+      "Choropampa",
+      "Cochabamba",
+      "Conchán",
+      "Huambos",
+      "Lajas",
+      "Llama",
+      "Miracosta",
+      "Paccha",
+      "Pion",
+      "Querocoto",
+      "San Juan de Licupis",
+      "Tacabamba",
+      "Tocmoche"
+    ]
+  },
+  "Callao": {
+    "Callao": [
+      "Callao",
+      "Bellavista",
+      "Carmen de la Legua Reynoso",
+      "La Perla",
+      "La Punta",
+      "Ventanilla",
+      "Mi Perú"
+    ]
+  },
+  "Cusco": {
+    "Cusco": [
+      "Cusco",
+      "San Jerónimo",
+      "San Sebastián",
+      "Santiago",
+      "Wanchaq",
+      "Poroy",
+      "San Sebastián",
+      "Saylla",
+      "Oropesa",
+      "Wanakawri"
+    ],
+    "Urubamba": [
+      "Urubamba",
+      "Chinchero",
+      "Huayllabamba",
+      "Machupicchu",
+      "Maras",
+      "Ollantaytambo",
+      "Yucay"
+    ],
+    "Santiago": [
+      "Santiago",
+      "Alto Pichigua",
+      "Colquepata",
+      "Coya",
+      "Lamay",
+      "Llusk'a",
+      "Marcapata",
+      "Ocongate",
+      "Quiquijana",
+      "Yanaoca"
+    ]
+  },
+
+  "Huancavelica": {
+    "Huancavelica": [
+      "Huancavelica",
+      "Acobambilla",
+      "Acoria",
+      "Conayca",
+      "Cuenca",
+      "Huachocolpa",
+      "Huayllahuara",
+      "Izcuchaca",
+      "Laria",
+      "Manta",
+      "Mariscal Cáceres",
+      "Moya",
+      "Nuevo Occoro",
+      "Palca",
+      "Pilchaca",
+      "Vilca",
+      "Yauli",
+      "Ascensión"
+    ],
+    "Castrovirreyna": [
+      "Castrovirreyna",
+      "Chupamarca",
+      "Aurahua",
+      "Capillas",
+      "Cocas",
+      "Huachos",
+      "Huamatama",
+      "Mollepampa",
+      "San Juan",
+      "Santa Ana"
+    ]
+  },
+  "Huánuco": {
+    "Huánuco": [
+      "Huánuco",
+      "Amarilis",
+      "Chinchao",
+      "Hermilio Valdizán",
+      "Huacaybamba",
+      "Huamalíes",
+      "Illa",
+      "Jivia",
+      "La Unión",
+      "Leoncio Prado",
+      "Llata",
+      "Rupa-Rupa",
+      "San Francisco de Cayrán",
+      "San Pedro de Chaulán",
+      "Santa María del Valle",
+      "Yarumayo",
+      "Pillco Marca"
+    ],
+    "Leoncio Prado": [
+      "Rupa Rupa",
+      "Daniel Alomía Robles",
+      "Hermilio Valdizán",
+      "José Crespo y Castillo",
+      "Luyando",
+      "Mariano Dámaso Beraun",
+      "Monzón",
+      "Pucayacu",
+      "Rupa Rupa",
+      "Samugari",
+      "Villa Rica"
+    ]
+  },
+  "Ica": {
+    "Ica": [
+      "Ica",
+      "La Tinguiña",
+      "Los Aquijes",
+      "Ocucaje",
+      "Pachacutec",
+      "Parcona",
+      "Salas",
+      "San José de Los Molinos",
+      "San Juan Bautista",
+      "Santiago"
+    ],
+    "Pisco": [
+      "Pisco",
+      "Huancano",
+      "Humay",
+      "Paracas",
+      "San Andrés",
+      "San Clemente"
+    ]
+  },
+  "Junín": {
+    "Huancayo": [
+      "Huancayo",
+      "Carhuacallanga",
+      "Chacapampa",
+      "Chicche",
+      "Chilca",
+      "Chongos Alto",
+      "Colca",
+      "Cullhuas",
+      "El Tambo",
+      "Huasicancha",
+      "Huayucachi",
+      "Ingenio",
+      "Pariahuanca",
+      "Pilcomayo",
+      "Pucará",
+      "Quichuay",
+      "San Agustín",
+      "San Jerónimo de Tunán",
+      "San Pedro de Saño",
+      "Santo Domingo de Acobamba",
+      "Sapallanga",
+      "Sicaya",
+      "Viques"
+    ],
+    "Chanchamayo": [
+      "Chanchamayo",
+      "San Luis de Shuaro",
+      "Perené",
+      "San Ramón",
+      "Vitoc"
+    ]
+  },
+
+  "La Libertad": {
+    "Trujillo": [
+      "Trujillo",
+      "El Porvenir",
+      "Florencia de Mora",
+      "Huanchaco",
+      "La Esperanza",
+      "Laredo",
+      "Moche",
+      "Poroto",
+      "Simbal",
+      "Víctor Larco Herrera"
+    ],
+    "Ascope": [
+      "Ascope",
+      "Casa Grande",
+      "Chicama",
+      "Paiján",
+      "Rázuri",
+      "Santiago de Cao"
+    ],
+    "Sánchez Carrión": [
+      "Huamachuco",
+      "Chugay",
+      "Curgos",
+      "Marcabal",
+      "Sanagorán",
+      "Sarin",
+      "Sartimbamba",
+      "Tayabamba"
+    ],
+    "Pataz": [
+      "Tayabamba",
+      "Buldibuyo",
+      "Chillia",
+      "Huancaspata",
+      "Huaylillas",
+      "Huayo",
+      "Ongon",
+      "Parcoy",
+      "Pataz",
+      "Pías",
+      "Santiago de Challas",
+      "Taurija",
+      "Urpay"
+    ],
+    "Otuzco": [
+      "Otuzco",
+      "Agallpampa",
+      "Charat",
+      "Huaranchal",
+      "La Cuesta",
+      "Mache",
+      "Paranday",
+      "Salpo",
+      "Sinsicap",
+      "Usquil"
+    ],
+    "Julcán": [
+      "Julcán",
+      "Calamarca",
+      "Carabamba",
+      "Huaso"
+    ],
+    "Gran Chimú": [
+      "Cascas",
+      "Lucma",
+      "Marmot",
+      "Sayapullo"
+    ],
+    "Virú": [
+      "Virú",
+      "Chao",
+      "Guadalupito"
+    ]
+  },
+
+  "Lambayeque": {
+    "Chiclayo": [
+      "Chiclayo",
+      "José Leonardo Ortiz",
+      "La Victoria",
+      "Pimentel",
+      "Santa Rosa",
+      "Picsi",
+      "San José",
+      "Reque"
+    ],
+    "Ferreñafe": [
+      "Ferreñafe",
+      "Cañaris",
+      "Incahuasi",
+      "Manuel Antonio Mesones Muro",
+      "Pitipo"
+    ]
+  },
+  "Lima": {
+    "Lima": [
+      "Lima",
+      "Miraflores",
+      "San Isidro",
+      "Barranco",
+      "Santiago de Surco",
+      "Ate",
+      "San Juan de Lurigancho",
+      "San Borja",
+      "Comas",
+      "La Molina",
+      "Chorrillos",
+      "Santa Anita",
+      "Villa El Salvador",
+      "Los Olivos",
+      "Puente Piedra",
+      "San Martín de Porres"
+    ],
+    "Huaral": [
+      "Huaral",
+      "Chancay",
+      "Aucallama",
+      "Ihuari",
+      "Pacaraos"
+    ]
+  },
+  "Loreto": {
+    "Iquitos": [
+      "Iquitos",
+      "Punchana",
+      "Belén",
+      "San Juan Bautista",
+      "Indiana",
+      "Mazán",
+      "Napo",
+      "Alto Nanay"
+    ],
+    "Nauta": [
+      "Nauta",
+      "Parinari",
+      "Tigre",
+      "Trompeteros",
+      "Urarinas"
+    ]
+  },
+  "Madre de Dios": {
+    "Tambopata": [
+      "Puerto Maldonado",
+      "Inambari",
+      "Laberinto",
+      "Las Piedras"
+    ],
+    "Manu": [
+      "Fitzcarrald",
+      "Manu",
+      "Huepetuhe"
+    ]
+  },
+  "Moquegua": {
+    "Mariscal Nieto": [
+      "Moquegua",
+      "Carumas",
+      "San Cristóbal",
+      "Samegua",
+      "Torata"
+    ],
+    "General Sánchez Cerro": [
+      "Omate",
+      "Chojata",
+      "Coalaque",
+      "Ichuña",
+      "La Capilla",
+      "Lloque",
+      "Matalaque",
+      "Puquina",
+      "Quinistaquillas",
+      "Ubinas"
+    ]
+  },
+  "Pasco": {
+    "Pasco": [
+      "Cerro de Pasco",
+      "Chaupimarca",
+      "Yanacancha",
+      "Simón Bolívar",
+      "Tinyahuarco",
+      "Huayllay",
+      "Pallanchacra"
+    ],
+    "Oxapampa": [
+      "Oxapampa",
+      "Villa Rica",
+      "Pozuzo",
+      "Palcazu",
+      "Chontabamba"
+    ]
+  },
+  "Piura": {
+    "Piura": [
+      "Piura",
+      "Castilla",
+      "Catacaos",
+      "La Arena",
+      "Las Lomas",
+      "Tambo Grande",
+      "Veintiséis de Octubre"
+    ],
+    "Sullana": [
+      "Sullana",
+      "Bellavista",
+      "Marcavelica",
+      "Miguel Checa",
+      "Querecotillo",
+      "Salitral"
+    ]
+  },
+  "Puno": {
+    "Puno": [
+      "Puno",
+      "Acora",
+      "Platería",
+      "Capachica",
+      "Chucuito",
+      "Coata",
+      "Huata",
+      "Mañazo",
+      "Paucarcolla",
+      "Pichacani",
+      "San Antonio",
+      "Tiquillaca"
+    ],
+    "Juliaca": [
+      "Juliaca",
+      "San Miguel",
+      "Santa Lucia",
+      "Caracoto"
+    ]
+  },
+  "San Martín": {
+    "Moyobamba": [
+      "Moyobamba",
+      "Calzada",
+      "Habana",
+      "Jepelacio",
+      "Soritor",
+      "Yantaló"
+    ],
+    "Tarapoto": [
+      "Tarapoto",
+      "Alberto Leveau",
+      "Cacatachi",
+      "Chazuta",
+      "Juan Guerra",
+      "La Banda de Shilcayo",
+      "Morales"
+    ]
+  },
+  "Tacna": {
+    "Tacna": [
+      "Tacna",
+      "Alto de la Alianza",
+      "Calana",
+      "Ciudad Nueva",
+      "Coronel Gregorio Albarracín Lanchipa",
+      "Inclán",
+      "Pachía",
+      "Palca",
+      "Pocollay",
+      "Sama",
+      "Tarata"
+    ],
+    "Candarave": [
+      "Candarave",
+      "Cairani",
+      "Curibaya",
+      "Huanuara",
+      "Quilahuani",
+      "Sama"
+    ]
+  },
+  "Tumbes": {
+    "Tumbes": [
+      "Tumbes",
+      "Corrales",
+      "San Jacinto",
+      "San Juan de la Virgen"
+    ],
+    "Zarumilla": [
+      "Zarumilla",
+      "Aguas Verdes",
+      "Matapalo",
+      "Papayal"
+    ]
+  },
+  "Ucayali": {
+    "Coronel Portillo": [
+      "Pucallpa",
+      "Callería",
+      "Yarinacocha",
+      "Masisea",
+      "Nueva Requena",
+      "Curimaná",
+      "Iparía",
+      "Manantay",
+      "Ipupiña"
+    ],
+    "Atalaya": [
+      "Atalaya",
+      "Raymondi",
+      "Sepahua",
+      "Tahuanía",
+      "Yurúa"
+    ]
+  }
+
+}

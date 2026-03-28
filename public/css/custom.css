@@ -1,0 +1,475 @@
+/* Bicolor de filas */
+.btn-outline-primary {
+    color: #07789b;
+    border: 1px solid #07789b;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    font-weight: bold !important;
+    border-radius: 0.39rem;
+}
+
+.btn-outline-primary i {
+    font-size: 17px;
+}
+.btn-outline-primary:hover i {
+    font-size: 17.5px;
+}
+
+.btn-outline-primary:hover {
+    transform: scale(1.06);
+    background-color: #07789b;
+    box-shadow: 0 2px 8px rgba(10, 140, 179, 0.3);
+    border: none;
+
+}
+
+.btn-outline-primary:disabled {
+    color: #07789b;
+    border: 1px solid #07789b;
+    transition: none;
+    font-weight: bold !important;
+    border-radius: 0.39rem;
+
+}
+
+
+.table-custom tbody tr:nth-of-type(odd) {
+    background-color: #ebecc622;
+}
+
+.table-custom tbody tr:nth-of-type(even) {
+    background-color: #e0e0e0;
+}
+
+/* Hover en toda la fila (sin cambiar cursor) */
+.table-hover tbody tr:hover {
+    background-color: #ebecc622 !important;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: left;
+    padding: 1rem 0;
+    list-style: none;
+    gap: 0.3rem;
+    font-family: quicksand !important;
+}
+
+.pagination li a,
+.pagination li span {
+    color: var(--color-principal);
+    border: 1px solid var(--color-principal);
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.pagination li a:hover,
+.pagination li span:hover {
+    background-color: #f1f1f1;
+    /* Color gris cuando el cursor pasa por encima */
+    color: #333;
+}
+
+/* Páginas activas con fondo negro */
+.pagination .page-item.active .page-link {
+    background-color: #d98a23 !important;
+    /* Fondo negro para la página activa */
+    color: white !important;
+    /* Texto blanco en la página activa */
+    border-color: #000000 !important;
+    /* Borde negro */
+}
+
+/* Páginas deshabilitadas */
+.pagination .disabled .page-link {
+    color: #ccc;
+    border-color: #ccc;
+}
+
+.pagination {
+    flex-wrap: wrap;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.btn_header {
+    background: #0A8CB3 !important;
+    border: none;
+    text-align: left;
+    /* Tamaño de letra fluido */
+    font-size: clamp(13.5px, 1.6vw, 17.2px) !important;
+
+    color: white;
+    border-radius: 0%;
+
+}
+
+.form-bordered {
+    margin: 0;
+    border: none;
+    padding: 4px 0;
+    border-bottom: 1px dashed #eaedf1;
+}
+
+.estilo-info {
+    margin-bottom: 0px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.9rem, 2vw, 0.95rem);
+
+}
+
+@media (max-width: 576px) {
+    .margen-movil {
+        margin-left: -29px !important;
+        margin-right: -29px !important;
+    }
+
+    .margen-movil-2 {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* ===========================
+   Estilos para Dropzone
+   =========================== */
+
+.dropzone {
+    border: 2px dashed #7eccde !important;
+    border-radius: 12px;
+    background-color: rgba(240, 248, 255, 0.407) !important;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropzone:hover {
+    background-color: rgba(240, 248, 255, 0.682) !important;
+    border-color: #4bb8cc !important;
+}
+
+.dropzone.dragover {
+    background-color: rgba(75, 184, 204, 0.15) !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1) !important;
+}
+
+.dropzone-icon {
+    font-size: 36px;
+    color: #4bb8cc;
+    margin-bottom: 5px;
+}
+
+
+
+
+/* ===========================
+   Estilos para tablas
+   =========================== */
+
+#add-row td,
+#add-row th {
+    /* Padding fluido */
+    padding: clamp(3px, 0.6vw, 6px) clamp(6px, 1vw, 10px);
+
+    /* Tamaño de letra fluido */
+    font-size: clamp(13.5px, 1.6vw, 17.2px) !important;
+
+    /* Altura fluida */
+    height: clamp(36px, 4vw, 47px);
+
+    vertical-align: middle;
+    font-family: 'Quicksand', sans-serif;
+}
+
+
+/* ===========================
+   Card Headers personalizados
+   =========================== */
+.card-header-custom {
+    background: #E0F7FA;
+    color: #0A8CB3;
+    font-weight: bold;
+    border: 2px solid #86D2E3;
+    padding: 6px 20px;
+    border-radius: 6px 6px 0 0;
+}
+
+/* Contenedor de la alerta */
+.alert-interactive {
+    position: relative;
+    border-left: 6px solid #0888af;
+    /* verde Eduka */
+    background-color: #ebecc622;
+    color: #3e4441;
+    font-family: 'Quicksand', sans-serif;
+    font-size: clamp(0.85rem, 1.0vw, 0.95rem);
+    padding: 1rem 1.2rem 1rem 1rem;
+    border-radius: 3px;
+    box-shadow: 0 4px 12px #00000014;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    animation: fadeIn 0.5s ease-out forwards;
+    margin-bottom: 1rem;
+}
+
+/* Animación entrada */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación salida */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.alert-interactive i {
+    font-size: 1.2rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.alert-interactive .alert-content p {
+    margin: 0.3rem 0 0 0;
+    line-height: 1.5;
+}
+
+/* X flotante */
+.alert-interactive .btn-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #0888af;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #ffffff;
+    transition: transform 0.2s, background 0.2s;
+    border-radius: 30%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.alert-interactive .btn-close:hover {
+    color: #f2f2f2;
+    transform: translateY(-1px);
+}
+
+/* ===========================
+   Paneles de opciones personalizados
+   =========================== */
+.panel-opcion {
+    background: 9FE7F5;
+    border-radius: 12px;
+    border: 2px solid #419EBD !important;
+    box-shadow: 0 3px 8px #e0f7fa7a;
+    transition: all .25s ease;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* 👈 esto arregla tu problema */
+    align-items: center;
+    /* centra horizontalmente */
+    justify-content: center;
+    color: inherit;
+}
+
+.panel-opcion-inactive {
+    background: 9FE7F5;
+    border-radius: 12px;
+    border: 2px solid #727779 !important;
+    box-shadow: 0 3px 8px #cdd9da7a;
+    transition: all .25s ease;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* 👈 esto arregla tu problema */
+    align-items: center;
+    /* centra horizontalmente */
+    justify-content: center;
+    color: inherit;
+}
+
+.panel-opcion-inactive svg circle {
+    fill: #9ca3af;
+}
+
+.panel-seccion {
+    opacity: 0;
+    transform: translateY(-40px);
+    filter: blur(4px);
+    transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+}
+
+.panel-seccion.visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.panel-opcion-active {
+    background-color: #e0f7fa60;
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) inset;
+}
+
+.panel-opcion:hover {
+    background-color: #e0f7fa60;
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px #e0f7fa7a;
+}
+
+.icon-panel {
+    width: auto;
+    height: 80px;
+}
+
+.col-form-label {
+    font-size: 16px !important;
+    font-weight: 500;
+}
+
+.form-control {
+    font-size: 16px !important;
+}
+
+/* ===========================
+   Formatos para campos deshabilitados
+   =========================== */
+.form-control.disabled-format[readonly] {
+    text-transform: uppercase !important;
+    border-color: #9d886a !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+    background-color: #fdfaf5 !important;
+}
+
+.form-control.disabled-format:disabled {
+    text-transform: uppercase !important;
+    border-color: #9d886a !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+    background-color: #fdfaf5 !important;
+}
+
+/* ===========================
+   Estilos para alertas de información
+   =========================== */
+.alert-info {
+    color: #06789b;
+    background-color: #148cb118;
+    border-radius: 8px;
+    border: 1.5px solid #0983a9;
+    padding: 12px;
+    font-family: Quicksand, sans-serif;
+    box-shadow: 0 4px 12px #0984a92b;
+}
+
+.btn-color-header {
+    background-color: #063F5C;
+    border: none;
+    border-radius: 5px;
+
+    font-family: "Quicksand", sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.9rem, 2vw, 0.99rem);
+
+    color: #ffffff !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.btn-color-header:hover {
+    background-color: #043953;
+    color: #fff !important;
+    transform: translateX(-1px);
+    box-shadow: 0 4px 10px rgba(165, 73, 6, 0.15);
+    font-size: 1rem;
+}
+
+.btn-color {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    background-color: #ef7f0e;
+    border: none;
+    border-radius: 5px;
+
+    font-family: "Quicksand", sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.9rem, 2vw, 0.99rem);
+
+    color: #fff !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.btn-color:hover {
+    background-color: #e97209;
+    color: #fff !important;
+    transform: translateX(-1px);
+    box-shadow: 0 4px 10px rgba(165, 73, 6, 0.15);
+    font-size: 1rem;
+}
+
+.btn-color:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 127, 14, 0.35);
+    color: #fff !important;
+}
+
+.btn-color:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) inset;
+    color: #fff !important;
+}

@@ -1,0 +1,688 @@
+@extends('cplantilla.bprincipal')
+@section('titulo','Tomar Asistencia - Docente')
+@section('contenidoplantilla')
+<x-breadcrumb :module="'asistencia'" :section="'docente-tomar'" />
+<div class="container-fluid" id="contenido-principal">
+    <div class="row mt-4 ml-1 mr-1">
+        <div class="col-12">
+            <div class="box_block">
+                <!-- Collapse header -->
+                <button class="btn btn-block text-left rounded-0 btn_header header_6" type="button" data-toggle="collapse" data-target="#collapseTomarAsistencia" aria-expanded="true" aria-controls="collapseTomarAsistencia" style="background: #007bff !important; font-weight: bold; color: white;">
+                    <i class="fas fa-clipboard-check m-1"></i>&nbsp;Tomar Asistencia - {{ date('d/m/Y') }}
+                    <div class="float-right"><i class="fas fa-chevron-down"></i></div>
+                </button>
+                <!-- Descripción (siempre visible, dentro del bloque) -->
+                <div class="card-body rounded-0 border-0 pt-3 pb-3" style="background: #f3f3f3; border-bottom: 1px solid rgba(0,0,0,.125); border-top: 1px solid rgba(0,0,0,.125); color: #F59D24;">
+                    <div class="row justify-content-center align-items-center flex-wrap">
+                        <div class="col-auto text-center mb-2 mb-md-0" style="min-width:48px;">
+                            <i class="fas fa-calendar-day fa-2x"></i>
+                        </div>
+                        <div class="col px-2" style="text-align:justify;">
+                            <p style="margin-bottom: 0px; font-family: 'Quicksand', sans-serif; font-weight: 600; color: #004a92;">
+                                Registra la asistencia de tus estudiantes directamente en esta vista. Selecciona el tipo de asistencia para cada estudiante y guarda los cambios.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Collapse: contenido del dashboard -->
+                <div class="collapse show" id="collapseTomarAsistencia">
+                    <div class="card card-body rounded-0 border-0 pt-0 pb-2" style="background: transparent;">
+
+                        @if(isset($error))
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle"></i> {{ $error }}
+                            </div>
+                        @else
+                            @if($clases_hoy->count() > 0)
+                                <!-- Vista de Horario Organizada -->
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header bg-gradient-primary text-white">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h5 class="mb-0">
+                                                            <i class="fas fa-calendar-alt"></i> Horario de Clases - {{ date('l, d/m/Y') }}
+                                                        </h5>
+                                                        <small>{{ $clases_hoy->count() }} clases programadas hoy</small>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <div class="d-flex gap-3">
+                                                            <div class="text-center">
+                                                                <div class="h4 mb-0">{{ $clases_hoy->where('tiene_asistencia_hoy', true)->count() }}</div>
+                                                                <small>Completadas</small>
+                                                            </div>
+                                                            <div class="text-center">
+                                                                <div class="h4 mb-0">{{ $clases_hoy->where('tiene_asistencia_hoy', false)->count() }}</div>
+                                                                <small>Pendientes</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <!-- Timeline de Clases -->
+                                                <div class="schedule-timeline">
+                                                    @php
+                                                        $clases_ordenadas = $clases_hoy->sortBy('hora_inicio');
+                                                        $horarios = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+                                                    @endphp
+
+                                                    @foreach($horarios as $hora)
+                                                    @php
+                                                        $clases_en_hora = $clases_ordenadas->filter(function($clase) use ($hora) {
+                                                            return substr($clase->hora_inicio, 0, 2) === substr($hora, 0, 2);
+                                                        });
+                                                    @endphp
+
+                                                    @if($clases_en_hora->count() > 0)
+                                                    <div class="time-slot">
+                                                        <div class="time-label">
+                                                            <div class="time-circle">{{ substr($hora, 0, 5) }}</div>
+                                                        </div>
+                                                        <div class="classes-container">
+                                                            @foreach($clases_en_hora as $clase)
+                                                            <div class="class-card-wrapper">
+                                                                <div class="class-card {{ $clase->tiene_asistencia_hoy ? 'completed' : 'pending' }}"
+                                                                     onclick="toggleClassDetails({{ $clase->sesion_id }})">
+                                                                    <div class="class-header">
+                                                                        <div class="class-info">
+                                                                            <div class="subject-name">
+                                                                                <i class="fas fa-book"></i>
+                                                                                {{ $clase->cursoAsignatura->asignatura->nombre }}
+                                                                            </div>
+                                                                            <div class="class-details">
+                                                                                <span class="grade-section">
+                                                                                    {{ $clase->cursoAsignatura->curso->grado->nombre }} {{ $clase->cursoAsignatura->curso->seccion->nombre }}
+                                                                                </span>
+                                                                                <span class="time-range">
+                                                                                    {{ $clase->hora_inicio }} - {{ $clase->hora_fin }}
+                                                                                </span>
+                                                                                <span class="classroom">
+                                                                                    <i class="fas fa-map-marker-alt"></i> {{ $clase->aula ? $clase->aula->nombre : 'Sin aula' }}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="class-status">
+                                                                            @if($clase->tiene_asistencia_hoy)
+                                                                                <div class="status-badge completed">
+                                                                                    <i class="fas fa-check-circle"></i>
+                                                                                    <span>Completada</span>
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="status-badge pending">
+                                                                                    <i class="fas fa-clock"></i>
+                                                                                    <span>Pendiente</span>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="class-actions">
+                                                                        @if($clase->tiene_asistencia_hoy)
+                                                                            <button class="btn btn-sm btn-outline-success" onclick="event.stopPropagation(); verAsistencia({{ $clase->sesion_id }})">
+                                                                                <i class="fas fa-eye"></i> Ver
+                                                                            </button>
+                                                                        @else
+                                                                            <button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); marcarAsistenciaRapida({{ $clase->sesion_id }})">
+                                                                                <i class="fas fa-edit"></i> Marcar
+                                                                            </button>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Panel Expandible de Asistencia -->
+                                                                <div class="attendance-panel" id="attendance-panel-{{ $clase->sesion_id }}" style="display: none;">
+                                                                    <div class="attendance-content">
+                                                                        @if($clase->tiene_asistencia_hoy)
+                                                                            <div class="alert alert-success">
+                                                                                <i class="fas fa-check-circle"></i> La asistencia para esta clase ya ha sido registrada.
+                                                                                <a href="{{ route('asistencia.docente.ver', $clase->sesion_id) }}" class="alert-link">Ver detalles completos</a>
+                                                                            </div>
+                                                                        @else
+                                                                            <!-- Filtros para estudiantes -->
+                                                                            <div class="filters-section mb-3">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="input-group input-group-sm">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                                                                            </div>
+                                                                                            <input type="text" class="form-control student-search" id="search_{{ $clase->sesion_id }}"
+                                                                                                   placeholder="Buscar estudiante..." data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="d-flex gap-2">
+                                                                                            <select class="form-control form-control-sm attendance-filter" id="filter_{{ $clase->sesion_id }}" data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                                <option value="all">Todos</option>
+                                                                                                <option value="present">Presentes</option>
+                                                                                                <option value="absent">Ausentes</option>
+                                                                                                <option value="late">Tardes</option>
+                                                                                                <option value="justified">Justificados</option>
+                                                                                            </select>
+                                                                                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="limpiarFiltros({{ $clase->sesion_id }})">
+                                                                                                <i class="fas fa-times"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mt-2">
+                                                                                    <small class="text-muted">
+                                                                                        <span id="student-count-{{ $clase->sesion_id }}"></span>
+                                                                                    </small>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <form id="form-asistencia-{{ $clase->sesion_id }}" class="attendance-form" data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                <div class="attendance-grid">
+                                                                                    @php
+                                                                                        $estudiantes = $clase->cursoAsignatura->curso->matriculas()
+                                                                                            ->with(['estudiante.persona'])
+                                                                                            ->where('estado', 'Activo')
+                                                                                            ->orderBy('matriculas.matricula_id')
+                                                                                            ->get();
+                                                                                    @endphp
+
+                                                                                    @foreach($estudiantes as $index => $matricula)
+                                                                                    <div class="student-attendance-card student-row"
+                                                                                         data-student-name="{{ strtolower($matricula->estudiante->persona->nombres . ' ' . $matricula->estudiante->persona->apellidos) }}"
+                                                                                         data-attendance-type="present">
+                                                                                        <div class="student-header">
+                                                                                            <div class="student-avatar">
+                                                                                                <div class="avatar-circle">
+                                                                                                    {{ substr($matricula->estudiante->persona->nombres, 0, 1) }}{{ substr($matricula->estudiante->persona->apellidos, 0, 1) }}
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="student-info">
+                                                                                                <div class="student-name">{{ $matricula->estudiante->persona->nombres }}</div>
+                                                                                                <div class="student-lastname">{{ $matricula->estudiante->persona->apellidos }}</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="attendance-options">
+                                                                                            <label class="attendance-option present active">
+                                                                                                <input type="radio" name="asistencia_{{ $clase->sesion_id }}_{{ $matricula->matricula_id }}" value="P" checked
+                                                                                                       class="attendance-radio" data-matricula-id="{{ $matricula->matricula_id }}" data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                                <i class="fas fa-check-circle"></i>
+                                                                                                <span>Presente</span>
+                                                                                            </label>
+                                                                                            <label class="attendance-option absent">
+                                                                                                <input type="radio" name="asistencia_{{ $clase->sesion_id }}_{{ $matricula->matricula_id }}" value="A"
+                                                                                                       class="attendance-radio" data-matricula-id="{{ $matricula->matricula_id }}" data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                                <i class="fas fa-times-circle"></i>
+                                                                                                <span>Ausente</span>
+                                                                                            </label>
+                                                                                            <label class="attendance-option late">
+                                                                                                <input type="radio" name="asistencia_{{ $clase->sesion_id }}_{{ $matricula->matricula_id }}" value="T"
+                                                                                                       class="attendance-radio" data-matricula-id="{{ $matricula->matricula_id }}" data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                                <i class="fas fa-clock"></i>
+                                                                                                <span>Tarde</span>
+                                                                                            </label>
+                                                                                            <label class="attendance-option justified">
+                                                                                                <input type="radio" name="asistencia_{{ $clase->sesion_id }}_{{ $matricula->matricula_id }}" value="J"
+                                                                                                       class="attendance-radio" data-matricula-id="{{ $matricula->matricula_id }}" data-sesion-id="{{ $clase->sesion_id }}">
+                                                                                                <i class="fas fa-file-medical"></i>
+                                                                                                <span>Justificado</span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    @endforeach
+                                                                                </div>
+
+                                                                                <div class="attendance-footer">
+                                                                                    <div class="row align-items-center">
+                                                                                        <div class="col-md-8">
+                                                                                            <div class="form-group mb-0">
+                                                                                                <label for="observaciones_{{ $clase->sesion_id }}">
+                                                                            <i class="fas fa-comment"></i> Observaciones generales:
+                                                                        </label>
+                                                                                                <textarea class="form-control form-control-sm" id="observaciones_{{ $clase->sesion_id }}" name="observaciones_generales"
+                                                                                                          rows="2" placeholder="Observaciones para toda la clase..."></textarea>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-4 text-right">
+                                                                                            <div class="d-flex gap-2 justify-content-end">
+                                                                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                                                                        onclick="marcarTodosPresentes({{ $clase->sesion_id }})">
+                                                                                                    <i class="fas fa-check-double"></i> Todos Presentes
+                                                                                                </button>
+                                                                                                <button type="submit" class="btn btn-success">
+                                                                                                    <i class="fas fa-save"></i> Guardar
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Resumen General -->
+                                <div class="card border-info">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-chart-bar"></i> Resumen del Día
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-md-3">
+                                                <div class="p-3 bg-light rounded">
+                                                    <h4 class="text-primary">{{ $clases_hoy->count() }}</h4>
+                                                    <small class="text-muted">Clases Totales</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="p-3 bg-success rounded text-white">
+                                                    <h4>{{ $clases_hoy->where('tiene_asistencia_hoy', true)->count() }}</h4>
+                                                    <small>Completadas</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="p-3 bg-warning rounded text-white">
+                                                    <h4>{{ $clases_hoy->where('tiene_asistencia_hoy', false)->count() }}</h4>
+                                                    <small>Pendientes</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="p-3 bg-info rounded text-white">
+                                                    <h4>{{ $clases_hoy->sum(function($c) { return $c->cursoAsignatura->curso->matriculas()->where('estado', 'Activo')->count(); }) }}</h4>
+                                                    <small>Estudiantes Totales</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="text-center py-5">
+                                    <i class="fas fa-calendar-times text-muted fa-4x mb-4"></i>
+                                    <h4 class="text-muted mb-3">No hay clases programadas para hoy</h4>
+                                    <p class="text-muted mb-4">No tienes sesiones de clase programadas para el día de hoy.</p>
+                                    <a href="{{ route('asistencia.docente.dashboard') }}" class="btn btn-primary">
+                                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                                    </a>
+                                </div>
+                            @endif
+
+                            <!-- Acciones Rápidas -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end gap-2 flex-wrap">
+                                        <a href="{{ route('asistencia.docente.ver-asistencias') }}" class="btn btn-sm" style="background-color: #28a745 !important; color: white !important; border: none !important;">
+                                            <i class="fas fa-eye mr-1"></i>Ver Todas las Asistencias
+                                        </a>
+                                        <a href="{{ route('asistencia.docente.dashboard') }}" class="btn btn-sm" style="background-color: #6c757d !important; color: white !important; border: none !important;">
+                                            <i class="fas fa-arrow-left mr-1"></i>Volver al Dashboard
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('css-extra')
+<style>
+/* Timeline Schedule Styles */
+.schedule-timeline {
+    position: relative;
+    padding-left: 20px;
+}
+
+.time-slot {
+    display: flex;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.time-slot::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 25px;
+    width: 2px;
+    height: calc(100% - 20px);
+    background: #e9ecef;
+}
+
+.time-label {
+    width: 80px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.time-circle {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 3px solid white;
+}
+
+.classes-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.class-card-wrapper {
+    position: relative;
+}
+
+.class-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border: 2px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.class-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+.class-card.completed {
+    border-color: #28a745;
+    background: linear-gradient(135deg, #f8fff9 0%, #ffffff 100%);
+}
+
+.class-card.pending {
+    border-color: #007bff;
+    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+}
+
+.class-card.completed::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #28a745;
+}
+
+.class-card.pending::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #007bff;
+}
+
+.class-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.class-info {
+    flex: 1;
+}
+
+.subject-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subject-name i {
+    color: #6c757d;
+}
+
+.class-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.class-details span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.grade-section {
+    font-weight: 600;
+    color: #495057;
+}
+
+.time-range {
+    color: #17a2b8;
+    font-weight: 500;
+}
+
+.classroom {
+    color: #6c757d;
+}
+
+.class-status {
+    text-align: right;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.completed {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-badge.pending {
+    background: #cce7ff;
+    color: #004085;
+    border: 1px solid #b3d7ff;
+}
+
+.class-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+/* Attendance Panel Styles */
+.attendance-panel {
+    margin-top: 20px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 20
+
+        // Apply search filter
+        const matchesSearch = searchTerm === '' ||
+            studentName.includes(searchTerm) ||
+            studentName.replace(/\s+/g, '').includes(searchTerm.replace(/\s+/g, ''));
+
+        // Apply attendance filter
+        let matchesFilter = true;
+        switch(filterValue) {
+            case 'present':
+                matchesFilter = attendanceType === 'present';
+                break;
+            case 'absent':
+                matchesFilter = attendanceType === 'absent';
+                break;
+            case 'late':
+                matchesFilter = attendanceType === 'late';
+                break;
+            case 'justified':
+                matchesFilter = attendanceType === 'justified';
+                break;
+            case 'unmarked':
+                // This would require checking if attendance was actually saved
+                // For now, show all since we're in the marking phase
+                matchesFilter = true;
+                break;
+            case 'all':
+            default:
+                matchesFilter = true;
+                break;
+        }
+
+        // Show/hide row based on filters
+        if (matchesSearch && matchesFilter) {
+            row.style.display = '';
+            visibleCount++;
+
+            // Update row numbers for visible rows
+            const numberCell = row.querySelector('.student-number');
+            if (numberCell) {
+                numberCell.textContent = visibleCount;
+            }
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Update student count display
+    actualizarConteoEstudiantes(sesionId, visibleCount, totalCount);
+}
+
+// Function to clear all filters for a specific class
+function limpiarFiltros(sesionId) {
+    const searchInput = document.getElementById(`search_${sesionId}`);
+    const filterSelect = document.getElementById(`filter_${sesionId}`);
+
+    if (searchInput) {
+        searchInput.value = '';
+    }
+
+    if (filterSelect) {
+        filterSelect.value = 'all';
+    }
+
+    // Re-apply filters (which will show all students)
+    aplicarFiltros(sesionId);
+}
+
+// Function to update student count display
+function actualizarConteoEstudiantes(sesionId, visibleCount = null, totalCount = null) {
+    const countElement = document.getElementById(`student-count-${sesionId}`);
+
+    if (!countElement) return;
+
+    if (visibleCount === null || totalCount === null) {
+        // Calculate counts if not provided
+        const tableBody = document.getElementById(`students-table-${sesionId}`);
+        if (tableBody) {
+            const rows = tableBody.querySelectorAll('.student-row');
+            totalCount = rows.length;
+            visibleCount = Array.from(rows).filter(row => row.style.display !== 'none').length;
+        } else {
+            visibleCount = 0;
+            totalCount = 0;
+        }
+    }
+
+    if (visibleCount === totalCount) {
+        countElement.textContent = `Mostrando ${totalCount} estudiante${totalCount !== 1 ? 's' : ''}`;
+    } else {
+        countElement.textContent = `Mostrando ${visibleCount} de ${totalCount} estudiante${totalCount !== 1 ? 's' : ''}`;
+    }
+}
+
+// Function to show quick stats for a class
+function mostrarEstadisticasRapidas(sesionId) {
+    const form = document.querySelector(`form[data-sesion-id="${sesionId}"]`);
+    const radios = form.querySelectorAll('input[type="radio"]:checked');
+
+    let presentes = 0, ausentes = 0, tardes = 0, justificados = 0;
+
+    radios.forEach(radio => {
+        switch(radio.value) {
+            case 'P': presentes++; break;
+            case 'A': ausentes++; break;
+            case 'T': tardes++; break;
+            case 'J': justificados++; break;
+        }
+    });
+
+    const total = radios.length;
+    const porcentajeAsistencia = total > 0 ? Math.round(((presentes + justificados) / total) * 100) : 0;
+
+    Swal.fire({
+        title: 'Estadísticas Rápidas',
+        html: `
+            <div class="text-center">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="p-2 bg-success text-white rounded mb-2">
+                            <div class="h4 mb-0">${presentes}</div>
+                            <small>Presentes</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2 bg-danger text-white rounded mb-2">
+                            <div class="h4 mb-0">${ausentes}</div>
+                            <small>Ausentes</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2 bg-warning text-white rounded mb-2">
+                            <div class="h4 mb-0">${tardes}</div>
+                            <small>Tardes</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2 bg-info text-white rounded mb-2">
+                            <div class="h4 mb-0">${justificados}</div>
+                            <small>Justificados</small>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="h5 text-primary">${porcentajeAsistencia}% Asistencia</div>
+                <small class="text-muted">Total estudiantes: ${total}</small>
+            </div>
+        `,
+        showConfirmButton: false,
+        showCloseButton: true
+    });
+}
+</script>
+@endpush

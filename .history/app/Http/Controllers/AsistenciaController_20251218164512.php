@@ -1,0 +1,258 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\AsistenciaDiaria;
+use App\Models\AsistenciaAsignatura;
+use App\Models\JustificacionAsistencia;
+use App\Models\InfEstudiante;
+use App\Models\CursoAsignatura;
+use App\Models\InfCurso;
+use App\Models\InfSeccion;
+use App\Models\InfGrado;
+use App\Models\InfNivel;
+use App\Models\InfAnioLectivo;
+use App\Models\TipoAsistencia;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+class AsistenciaController extends Controller
+{
+
+    /**
+     * Vista administrativa de asistencias
+     */
+    public function adminIndex()
+    {
+        // Verificar permisos
+        if (!in_array(Auth::user()->rol, ['Administrador'])) {
+            abort(403, 'No tienes permisos para acceder a esta sección.');
+        }
+
+        $anioActual = InfAnioLectivo::where('estado', 'Activo')->first();
+
+        return view('asistencia.admin-index', compact('anioActual'));
+    }
+
+    /**
+     * Vista para verificar justificaciones
+     */
+    public function verificar()
+    {
+        // Verificar permisos
+        if (!in_array(Auth::user()->rol, ['Administrador'])) {
+            abort(403, 'No tienes permisos para acceder a esta sección.');
+        }
+
+        $justificaciones = JustificacionAsistencia::with(['estudiante', 'usuario'])
+            ->where('estado', 'Pendiente')
+            ->orderBy('fecha_solicitud', 'desc')
+            ->paginate(15);
+
+        return view('asistencia.verificar', compact('justificaciones'));
+    }
+
+    /**
+     * Procesar verificación de justificación
+     */
+    public function procesarVerificacion(Request $request)
+    {
+        $request->validate([
+            'justificacion_id' => 'required|exists:justificacion_asistencias,id',
+            'accion' => 'required|in:Aprobar,Rechazar',
+            'observaciones' => 'nullable|string|max:500'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $justificacion = JustificacionAsistencia::findOrFail($request->justificacion_id);
+
+            if ($request->accion === 'Aprobar') {
+                // Aprobar justificación
+                $justificacion->update([
+                    'estado' => 'Aprobada',
+                    'observaciones_admin' => $request->observaciones,
+                    'fecha_revision' => now(),
+                    'revisado_por' => Auth::id()
+                ]);
+
+                // Crear registro de asistencia justificada
+                AsistenciaDiaria::updateOrCreate(
+                    [
+                        'matricula_id' => $justificacion->matricula_id,
+                        'fecha' => $justificacion->fecha_falta
+                    ],
+                    [
+                        'tipo_asistencia_id' => TipoAsistencia::where('codigo', 'J')->first()->id ?? 3,
+                        'justificado' => true,
+                        'observaciones' => 'Justificado: ' . $justificacion->motivo
+                    ]
+                );
+
+            } else {
+                // Rechazar justificación
+                $justificacion->update([
+                    'estado' => 'Rechazada',
+                    'observaciones_admin' => $request->observaciones,
+                    'fecha_revision' => now(),
+                    'revisado_por' => Auth::id()
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Justificación ' . strtolower($request->accion) . 'ada correctamente.'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar la justificación: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Exportar PDF de asistencias administrativas
+     */
+    public function exportarPDFAdmin(Request $request)
+    {
+        // Verificar permisos
+        if (!in_array(Auth::user()->rol, ['Administrador'])) {
+            abort(403, 'No tienes permisos para acceder a esta función.');
+        }
+
+        $request->validate([
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'curso_id' => 'nullable|exists:inf_cursos,id',
+            'seccion_id' => 'nullable|exists:inf_secciones,id'
+        ]);
+
+        try {
+            $query = AsistenciaDiaria::with(['matricula.estudiante', 'tipoAsistencia']);
+
+            // Filtros
+            if ($request->filled('curso_id')) {
+                $query->whereHas('matricula', function($q) use ($request) {
+                    $q->where('curso_id', $request->curso_id);
+                });
+            }
+
+            if ($request->filled('seccion_id')) {
+                $query->whereHas('matricula', function($q) use ($request) {
+                    $q->where('seccion_id', $request->seccion_id);
+                });
+            }
+
+            $asistencias = $query->whereBetween('fecha', [$request->fecha_inicio, $request->fecha_fin])
+                ->orderBy('fecha')
+                ->orderBy('matricula_id')
+                ->get();
+
+            $pdf = Pdf::loadView('asistencia.reportes.admin-pdf', compact('asistencias', 'request'));
+
+            return $pdf->download('reporte_asistencias_admin_' . date('Y-m-d') . '.pdf');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al generar el reporte: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * API para tabla AJAX de asistencias
+     */
+    public function getTablaAsistencias(Request $request)
+    {
+        $request->validate([
+            'fecha_inicio' => 'nullable|date',
+            'fecha_fin' => 'nullable|date',
+            'curso_id' => 'nullable|exists:inf_cursos,id',
+            'seccion_id' => 'nullable|exists:inf_secciones,id',
+            'tipo_asistencia' => 'nullable|exists:tipo_asistencias,id'
+        ]);
+
+        try {
+            $query = AsistenciaDiaria::with(['matricula.estudiante', 'tipoAsistencia']);
+
+            // Filtros
+            if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
+                $query->whereBetween('fecha', [$request->fecha_inicio, $request->fecha_fin]);
+            }
+
+            if ($request->filled('curso_id')) {
+                $query->whereHas('matricula', function($q) use ($request) {
+                    $q->where('curso_id', $request->curso_id);
+                });
+            }
+
+            if ($request->filled('seccion_id')) {
+                $query->whereHas('matricula', function($q) use ($request) {
+                    $q->where('seccion_id', $request->seccion_id);
+                });
+            }
+
+            if ($request->filled('tipo_asistencia')) {
+                $query->where('tipo_asistencia_id', $request->tipo_asistencia);
+            }
+
+            $asistencias = $query->orderBy('fecha', 'desc')
+                ->orderBy('matricula_id')
+                ->paginate(25);
+
+            return response()->json([
+                'success' => true,
+                'data' => $asistencias
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cargar los datos: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * API para buscar estudiantes AJAX
+     */
+    public function buscarEstudiantes(Request $request)
+    {
+        $request->validate([
+            'q' => 'nullable|string|max:100'
+        ]);
+
+        try {
+            $query = InfEstudiante::with(['matriculas.curso', 'matriculas.seccion']);
+
+            if ($request->filled('q')) {
+                $query->where(function($q) use ($request) {
+                    $q->where('nombres', 'like', '%' . $request->q . '%')
+                      ->orWhere('apellidos', 'like', '%' . $request->q . '%')
+                      ->orWhere('dni', 'like', '%' . $request->q . '%');
+                });
+            }
+
+            $estudiantes = $query->limit(20)->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $estudiantes
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al buscar estudiantes: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+}
