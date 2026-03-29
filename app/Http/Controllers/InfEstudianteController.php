@@ -109,6 +109,7 @@ class InfEstudianteController extends Controller
                     'idDistrito' => $validated['distrito'],
                     'nombreAvenida' => $validated['calle'],
                     'referencia' => $validated['referencia'] ?? null,
+                    'created_at' => now(),
                 ]);
 
 

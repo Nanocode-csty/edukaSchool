@@ -54,6 +54,7 @@ class DatabaseSeeder extends Seeder
         //Cliente::factory(20)->create();
         //InfEstudiante::factory(100)->create();
 
+        
     }
 
 }
