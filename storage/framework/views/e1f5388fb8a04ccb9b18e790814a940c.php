@@ -12,8 +12,8 @@
                 <tr>
                     <td><?php echo e($grado->descripcion); ?></td>
                     <td class="text-center">
-                        <span class="badge fw-semibold px-3 py-1  rounded-pill"
-                            style="background-color: #ede9fe; color: #6b21a8; font-size: 0.85rem; border:none; font-weight:bold">
+                        <span class="badge fw-bold px-3 py-1  rounded-pill"
+                            style="background-color: #ede9fe; color: #6b21a8; border:none;">
                             <?php echo e(strtoupper($grado->nivel_nombre)); ?>
 
                         </span>

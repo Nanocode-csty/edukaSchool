@@ -13,8 +13,8 @@
             @foreach ($anoslectivos as $anio)
                 <tr>
                     <td>{{ $anio->nombre }}</td>
-                    <td>{{ \Carbon\Carbon::parse($anio->fecha_inicio)->format('d/m/Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($anio->fecha_fin)->format('d/m/Y') }}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($anio->fecha_inicio)->format('d/m/Y') }}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($anio->fecha_fin)->format('d/m/Y') }}</td>
                     <td class="text-center">
                         @if ($anio->estado === 'Activo')
                             <span class="badge fw-bold px-3 py-1 rounded-pill"
@@ -28,7 +28,7 @@
                             </span>
                         @elseif($anio->estado === 'Finalizado')
                             <span class="badge fw-bold px-3 py-1 rounded-pill"
-                                style="background-color:#d9484070; border:none; color:#7b1206;">
+                                style="background-color:#FFD1D0; border:none; color:#FF383C;">
                                 FINALIZADO
                             </span>
                         @else

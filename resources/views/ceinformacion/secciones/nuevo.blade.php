@@ -53,7 +53,7 @@
                                                 ]" />
                                             <x-form.field name="capacidad_maxima" label="Capacidad Máxima" type="number"
                                                 max="30" min="1" />
-                                            <x-form.field name="descripcion" label="Descripción" />
+                                            <x-form.field name="descripcion" label="Descripción" class="disabled-format" readonly/>
 
                                         </div>
                                     </div>

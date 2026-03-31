@@ -18,8 +18,8 @@
                         <span class="badge px-3 py-1 rounded-pill fw-bold"
                             style="background-color: <?php echo e($seccion->estado === 'Activo' ? '#b3f0ff' : '#ffd6d6'); ?>;
                                color: <?php echo e($seccion->estado === 'Activo' ? '#0b5e80' : '#841c26'); ?>;
-                               font-size: 0.85rem; border:none">
-                            <?php echo e($seccion->estado); ?>
+                               border:none">
+                            <?php echo e(\Str::upper($seccion->estado)); ?>
 
                         </span>
                     </td>

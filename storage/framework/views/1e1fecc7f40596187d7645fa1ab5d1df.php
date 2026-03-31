@@ -13,8 +13,8 @@
             <?php $__currentLoopData = $anoslectivos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $anio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td><?php echo e($anio->nombre); ?></td>
-                    <td><?php echo e(\Carbon\Carbon::parse($anio->fecha_inicio)->format('d/m/Y')); ?></td>
-                    <td><?php echo e(\Carbon\Carbon::parse($anio->fecha_fin)->format('d/m/Y')); ?></td>
+                    <td class="text-center"><?php echo e(\Carbon\Carbon::parse($anio->fecha_inicio)->format('d/m/Y')); ?></td>
+                    <td class="text-center"><?php echo e(\Carbon\Carbon::parse($anio->fecha_fin)->format('d/m/Y')); ?></td>
                     <td class="text-center">
                         <?php if($anio->estado === 'Activo'): ?>
                             <span class="badge fw-bold px-3 py-1 rounded-pill"
@@ -28,7 +28,7 @@
                             </span>
                         <?php elseif($anio->estado === 'Finalizado'): ?>
                             <span class="badge fw-bold px-3 py-1 rounded-pill"
-                                style="background-color:#d9484070; border:none; color:#7b1206;">
+                                style="background-color:#FFD1D0; border:none; color:#FF383C;">
                                 FINALIZADO
                             </span>
                         <?php else: ?>

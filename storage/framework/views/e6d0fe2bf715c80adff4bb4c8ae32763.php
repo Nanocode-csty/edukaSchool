@@ -1,241 +1,242 @@
-<?php $__env->startSection('titulo','Registro de Aulas'); ?>
-
+<?php $__env->startSection('titulo', 'Registro de Aulas'); ?>
 <?php $__env->startSection('contenidoplantilla'); ?>
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center"
-             style="background-color: #218c74; color: white;">
-            <h4 class="mb-0"><i class="fas fa-school"></i> Listado de Aulas</h4>
-            <a href="<?php echo e(route('aulas.create')); ?>" class="btn btn-sm"
-               style="background-color: #38ada9; color: white;">
-                <i class="fas fa-plus-circle"></i> Nueva Aula
-            </a>
-        </div>
 
-        <div class="card-body">
-            
-            <?php if(session('success')): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?php echo e(session('success')); ?>
+    <style>
+        /* El detalle tendrá el mismo color que la fila anterior DETALLE DE IMPARES*/
+        .collapse-row.odd {
+            background-color: #f5f5f5;
+        }
 
-                </div>
-                <script>
-                    setTimeout(() => document.querySelector('.alert-success')?.remove(), 3000);
-                </script>
-            <?php endif; ?>
+        /* El detalle tendrá el mismo color que la fila anterior DETALLE DE PARES*/
+        .collapse-row.even {
+            background-color: #e0e0e0;
+        }
+    </style>
+    <?php echo $__env->make('ccomponentes.loader', ['id' => 'loaderPrincipalAulas'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?> 
 
-            <?php if(session('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?php echo e(session('error')); ?>
+    <div class="container-fluid margen-movil-2" id="contenido-principal" style="position: relative;">
+        <div class="row mt-4 ml-1 mr-1">
+            <div class="col-12">
+                <div class="card">
+                    <div class="estilo-info btn btn-block btn_header header_6">
+                        <div class="row  d-flex justify-content-between align-items-center">
+                            <div class="col-12 col-md-7"><i class="fas fa-file-signature m-1"></i>&nbsp;Registro y listado de
+                                Aulas</div>
+                            <div class="col-12 col-md-5 mb-md-0 d-flex justify-content-start">
+                                <a href="<?php echo e(route('aulas.create')); ?>" id="nuevoRegistroBtns"
+                                    class="btn w-100 btn-color-header d-flex justify-content-between align-items-center"
+                                    type="button">
+                                    <i class="ti ti-pencil-plus me-2 mx-1" style="font-size:24px"></i> REGISTRAR AULA
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                </div>
-            <?php endif; ?>
+                    <div class="card-body" style="background-color: #fff">
+                        <div class="alert alert-interactive" id="alertMatricula">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div class="alert-content">
+                                <strong>En esta sección podrás registrar aulas y consultar sobre las ya
+                                    registradas.</strong>
+                                <br>
 
-            <?php if($errors->any()): ?>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <ul class="mb-0">
-                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <li><?php echo e($error); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                </div>
-            <?php endif; ?>
+                                <span>
+                                    <b>Estimado Usuario:</b> Asegúrate de revisar cuidadosamente los datos antes de
+                                    guardarlos. Esta información será utilizada para la gestión académica y administrativa
+                                    de la I.E. Cualquier modificación posterior debe realizarse con responsabilidad y
+                                    siguiendo los protocolos establecidos por la institución.
+                                </span>
+                            </div>
+                            <button class="btn-close" onclick="cerrarAlert('alertMatricula')">&times;</button>
+                        </div>
 
-            
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <form id="formBuscarAula" method="GET" class="d-flex">
-                        <input type="search" name="buscarpor" id="buscarpor" value="<?php echo e($buscarpor); ?>"
-                            class="form-control"
-                            placeholder="Buscar por nombre, ubicación, tipo o capacidad"
-                            autocomplete="off">
-                        <button type="submit" class="btn">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
+                        <script>
+                            function cerrarAlert(id) {
+                                const alertBox = document.getElementById(id);
+                                alertBox.style.animation = 'fadeOut 0.5s ease-out forwards';
+
+                                setTimeout(() => {
+                                    alertBox.style.display = 'none';
+                                }, 500);
+                            }
+                        </script>
+
+                        <div class="row mb-2 d-flex align-items-center">
+                            <!-- Botón a la izquierda -->
+                            <div class="col-12 col-md-6 mb-md-0 d-flex justify-content-start">
+                                <a href="<?php echo e(route('aulas.create')); ?>" id="nuevoRegistroBtns"
+                                    class="btn w-100 mt-3 btn-color d-flex justify-content-between align-items-center"
+                                    type="button">
+                                    <i class="ti ti-user-plus me-2 mx-2" style="font-size:24px"></i> ORDENAR POR
+                                </a>
+                            </div>
+
+                            <!-- Buscador a la derecha -->
+                            <div class="col-12 col-md-6 d-flex justify-content-md-end justify-content-start estilo-info">
+                                <form id="formBuscarAulas" method="GET" class="w-100" style="max-width: 100%;">
+                                    <div class="input-group">
+                                        <input id="inputBuscar" name="buscarpor" class="form-control mt-3" type="search"
+                                            placeholder="Ingrese Nombre del año lectivo" aria-label="Search"
+                                            value="<?php echo e($buscarpor); ?>" autocomplete="off"
+                                            style="border-color: #F59617; font-size:16px !important;">
+                                        <button class="btn btn-color mt-3" type="submit"
+                                            style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; ">
+                                            <i class="ti ti-search" style="font-size:24px"></i>
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="row form-bordered align-items-center"></div>
+
+                        <div id="tabla-wrapper" style="position: relative; min-height: 200px;">
+
+                            <?php echo $__env->make('ccomponentes.loader', ['id' => 'loaderTablaAulas'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+                            <div id="tabla-aulas" style="position: relative;">
+                                <?php echo $__env->make('ceinformacion.aulas.tabla', ['aulas' => $aulas], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            
-            <div id="loaderTabla" class="text-center my-3" style="display: none;">
-                <div class="spinner-border text-success" role="status">
-                    <span class="visually-hidden">Cargando...</span>
-                </div>
-            </div>
-
-            
-            <div id="tabla-aulas">
-                <?php echo $__env->make('ceinformacion.aulas.tabla', ['aulas' => $aulas], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-            </div>
+            <br>
         </div>
     </div>
-</div>
-<style>
-    /* campo de búsqueda */
-#formBuscarAula input[type="search"] {
-    font-size: 0.95rem;
-    padding: 0.45rem 0.75rem;
-    border-radius: 6px 0 0 6px;
-    border: 1px solid #38ada9;
-    border-right: none;
-    transition: box-shadow 0.2s ease;
-}
 
-#formBuscarAula input[type="search"]:focus {
-    box-shadow: 0 0 6px rgba(51, 217, 178, 0.4);
-    border-color: #33d9b2;
-    outline: none;
-}
-
-#formBuscarAula button {
-    border-radius: 0 6px 6px 0;
-    border: 1px solid #1f6361;
-    border-left: none;
-    border-right: none;
-    background-color: #2b7463;
-    color: white;
-    font-weight: bold;
-}
-
-</style>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buscarInput = document.getElementById('buscarpor');
+            const form = document.getElementById('formBuscarSeccion');
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const buscarInput = document.getElementById('buscarpor');
-        const form = document.getElementById('formBuscarAula');
 
-        function fetchAulas() {
-            const valorBuscar = buscarInput.value.trim();
-            const loader = document.getElementById('loaderTabla');
-            const contenedor = document.getElementById('tabla-aulas');
+            buscarInput.addEventListener('input', function() {
+                if (this.value.trim() === '') {
+                    fetchSecciones();
+                }
+            });
 
-            loader.style.display = 'block';
-            contenedor.style.opacity = '0.5';
+            document.addEventListener('click', function(e) {
 
-            fetch(`<?php echo e(route('aulas.index')); ?>?buscarpor=${encodeURIComponent(valorBuscar)}`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(response => response.text())
-            .then(html => {
-                contenedor.innerHTML = html;
+                // Confirmación eliminación
+                if (e.target.closest('.form-eliminar')) {
+                    e.preventDefault();
+                    const form = e.target.closest('.form-eliminar');
+
+                    Swal.fire({
+                        title: '¿Está seguro?',
+                        text: 'Esta acción no se puede deshacer.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <?php if(session('success')): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: '<?php echo e(session('success')); ?>',
+                    confirmButtonColor: '#28a745',
+                    timer: 3200,
+                    showConfirmButton: false
+                });
+            });
+        </script>
+    <?php endif; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const inputBuscar = document.getElementById('inputBuscar');
+            const formBuscar = document.getElementById('formBuscarAulas');
+            const tabla = document.getElementById('tabla-aulas');
+            const loader = document.getElementById('loaderTablaAulas');
+
+            let debounceTimer = null;
+
+            function mostrarLoader() {
+                loader.style.display = 'flex';
+                tabla.style.opacity = '0.5'; // feedback visual extra
+            }
+
+            function ocultarLoader() {
                 loader.style.display = 'none';
-                contenedor.style.opacity = '1';
-            });
-        }
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const valorBuscar = buscarInput.value.trim();
-
-            if (valorBuscar === '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Campo vacío',
-                    text: 'Por favor, ingresa un término de búsqueda.',
-                    confirmButtonColor: '#0b5e80'
-                });
-                return;
+                tabla.style.opacity = '1';
             }
 
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'info',
-                title: 'Buscando Aulas...',
-                showConfirmButton: false,
-                timer: 1200
-            });
+            async function cargarTabla(buscar = '', page = 1) {
+                // 🔥 SIEMPRE se ejecuta
+                mostrarLoader();
 
-            fetchAulas();
-        });
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+                const url =
+                    `<?php echo e(route('aulas.index')); ?>?buscarpor=${encodeURIComponent(buscar)}&page=${page}`;
 
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'info',
-                title: 'Buscando aulas...',
-                showConfirmButton: false,
-                timer: 1200
-            });
+                try {
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
 
-            fetchAulas();
-        });
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const valorBuscar = buscarInput.value.trim();
+                    if (!response.ok) throw new Error('Error en la respuesta');
 
-            if (valorBuscar === '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Campo vacío',
-                    text: 'Por favor, ingresa un término de búsqueda.',
-                    confirmButtonColor: '#0b5e80'
-                });
-                return;
+                    const html = await response.text();
+                    tabla.innerHTML = html;
+
+                } catch (error) {
+                    console.error(error);
+                    alert('Error al cargar los datos');
+                } finally {
+                    // 🔥 SOLO se oculta cuando TODO terminó
+                    ocultarLoader();
+                }
             }
 
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'info',
-                title: 'Buscando aulas...',
-                showConfirmButton: false,
-                timer: 1200
+            // 🔎 Buscar (debounce)
+            inputBuscar.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    cargarTabla(inputBuscar.value.trim(), 1);
+                }, 400);
             });
 
-            fetchAulas();
-        });
-        buscarInput.addEventListener('input', function () {
-            if (this.value.trim() === '') {
-                fetchAulas();
-            }
-        });
-
-        document.addEventListener('click', function (e) {
-            if (e.target.closest('.pagination a')) {
+            // 📝 Submit
+            formBuscar.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const url = e.target.closest('a').getAttribute('href');
-                const valorBuscar = buscarInput.value.trim();
+                cargarTabla(inputBuscar.value.trim(), 1);
+            });
 
-                fetch(`${url}&buscarpor=${encodeURIComponent(valorBuscar)}`, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('tabla-aulas').innerHTML = html;
-                });
-            }
+            // 📄 Paginación
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('.pagination a');
+                if (!link) return;
 
-            if (e.target.closest('.form-eliminar')) {
                 e.preventDefault();
-                const form = e.target.closest('.form-eliminar');
 
-                Swal.fire({
-                    title: '¿Está seguro?',
-                    text: 'Esta acción no se puede deshacer.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            }
+                const url = new URL(link.href);
+                const page = url.searchParams.get('page');
+
+                cargarTabla(inputBuscar.value.trim(), page);
+            });
+
         });
-    });
-</script>
-
+    </script>
 <?php $__env->stopSection(); ?>
-
 
 <?php echo $__env->make('cplantilla.bprincipal', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/ronaldoroblesromero/Herd/edukaSchool/resources/views/ceinformacion/aulas/registrar.blade.php ENDPATH**/ ?>

@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('titulo', 'Nuevo Año Lectivo'); ?>
 <?php $__env->startSection('contenidoplantilla'); ?>
 

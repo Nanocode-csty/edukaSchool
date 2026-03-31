@@ -18,8 +18,8 @@
                         <span class="badge px-3 py-1 rounded-pill fw-bold"
                             style="background-color: {{ $seccion->estado === 'Activo' ? '#b3f0ff' : '#ffd6d6' }};
                                color: {{ $seccion->estado === 'Activo' ? '#0b5e80' : '#841c26' }};
-                               font-size: 0.85rem; border:none">
-                            {{ $seccion->estado }}
+                               border:none">
+                            {{ \Str::upper($seccion->estado) }}
                         </span>
                     </td>
                     <td class="text-center gap-4">
